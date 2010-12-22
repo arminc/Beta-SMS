@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:background="@drawable/green"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:stretchColumns="*">
+	<TableRow>
+		<TextView android:id="@+id/lblTo" android:text="@string/MAIN_TO"
+			android:textStyle="bold" android:padding="3dip" android:textColor="@drawable/black" />
+		<TableRow android:gravity="right">
+			<TextView android:id="@+id/lblBalance" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/MAIN_BALANCE_LABEL"
+				android:padding="3dip" android:textColor="@drawable/black" />
+			<TextView android:id="@+id/txtBalance" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="*"
+				android:textColor="@drawable/black" />
+		</TableRow>
+	</TableRow>
+	<TableRow>
+		<AutoCompleteTextView android:id="@+id/txtTo"
+			android:completionThreshold="1" android:completionHint="@string/MAIN_TO_HINT_AUTO"
+			android:hint="@string/MAIN_TO_HINT" android:padding="3dip"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_span="2" />
+	</TableRow>
+	<View android:layout_height="5dip" />
+	<View android:layout_height="2dip" android:background="@drawable/dark_green" />
+	<TableRow>
+		<TextView android:id="@+id/lblSmsText" android:text="@string/MAIN_SMSTEXT"
+			android:textStyle="bold" android:padding="3dip" android:textColor="@drawable/black" />
+		<TableRow android:gravity="right">
+			<TextView android:id="@+id/lblTextCount"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="@string/MAIN_COUNT_LABEL" android:padding="3dip"
+				android:textColor="@drawable/black" />
+			<TextView android:id="@+id/txtTextCount"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="0" android:textColor="@drawable/black" />
+		</TableRow>
+	</TableRow>
+	<TableRow>
+		<EditText android:id="@+id/txtSmsText" android:padding="3dip"
+			android:layout_width="fill_parent" android:layout_height="100px"
+			android:hint="@string/MAIN_SMSTEXT_HINT" android:layout_span="2" android:inputType="textCapSentences"/>
+	</TableRow>
+
+	<View android:layout_height="5dip" />
+
+	<View android:layout_height="2dip" android:background="@drawable/dark_green" />
+	<TableRow>
+		<Button android:id="@+id/btnSend" android:text="@string/BUTTON_SEND"
+			android:padding="3dip" />
+		<TableRow android:gravity="right">
+			<TextView android:id="@+id/lblTextCount"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="@string/CHK_BOX_SEND_NORMAL" android:padding="3dip"
+				android:textColor="@drawable/black" />
+			<CheckBox android:id="@+id/chkSendNormal" android:padding="3dip"
+				android:width="10px" />
+		</TableRow>
+	</TableRow>
+</TableLayout>
+

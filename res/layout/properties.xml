@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/SET_PW">
+		<EditTextPreference android:key="@string/SET_USER_KEY"
+			android:title="@string/SET_USER_TITLE" android:dialogTitle="@string/SET_USER_TITLE_DIALOG" />
+		<EditTextPreference android:key="@string/SET_PW_KEY"
+			android:title="@string/SET_PW_TITLE" android:dialogTitle="@string/SET_PW_TITLE_DIALOG"
+			android:inputType="textPassword" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/SET_PHONE">
+		<EditTextPreference android:key="@string/SET_PHONE_KEY"
+			android:title="@string/SET_PHONE_TITLE" android:dialogTitle="@string/SET_PHONE_TITLE_DIALOG"
+			android:summary="@string/SET_PHONE_TITLE_HINT" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/SET_SERVICE">
+		<EditTextPreference android:key="@string/SET_SERVICE_KEY"
+			android:title="@string/SET_SERVICE_TITLE" android:dialogTitle="@string/SET_SERVICE_TITLE_DIALOG"
+			android:summary="@string/SET_SERVICE_TITLE_HINT"
+			android:defaultValue="www.webcalldirect.com" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/SET_SAVE_SMS">
+		<CheckBoxPreference android:key="@string/SET_SAVE_SMS_KEY"
+			android:title="@string/SET_SAVE_SMS_TITLE" android:summary="@string/SET_SAVE_SMS_TITLE_DIALOG" />
+		<CheckBoxPreference android:key="@string/SET_DELETE_TEXT_KEY"
+			android:title="@string/SET_DELETE_TEXT_TITLE" android:summary="@string/SET_DELETE_TEXT_TITLE_DIALOG" />
+		<CheckBoxPreference android:key="@string/SET_SHOW_BALANCE_KEY"
+			android:title="@string/SET_SHOW_BALANCE_TITLE" android:summary="@string/SET_SHOW_BALANCE_TITLE_DIALOG" />
+	</PreferenceCategory>
+</PreferenceScreen>

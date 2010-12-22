@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/settings" android:title="@string/MENU_SET" android:icon="@android:drawable/ic_menu_preferences"/>
+	<item android:id="@+id/info" android:title="@string/MENU_INFO" android:icon="@android:drawable/ic_menu_info_details"/>
+	<item android:id="@+id/request" android:title="@string/MENU_REQUEST"/>
+	<item android:id="@+id/quit" android:title="@string/MENU_EXIT" android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
+</menu>
