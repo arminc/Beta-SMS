@@ -34,7 +34,7 @@
 				android:textColor="@drawable/black" />
 			<TextView android:id="@+id/txtTextCount"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:text="0" android:textColor="@drawable/black" />
+				android:text="0/0" android:textColor="@drawable/black" />
 		</TableRow>
 	</TableRow>
 	<TableRow>

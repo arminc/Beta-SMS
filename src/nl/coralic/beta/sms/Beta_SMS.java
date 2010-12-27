@@ -21,9 +21,8 @@ import java.net.URLDecoder;
 
 import nl.coralic.beta.sms.log.Log;
 import nl.coralic.beta.sms.utils.AndroidSMS;
+import nl.coralic.beta.sms.utils.BetaSMSService;
 import nl.coralic.beta.sms.utils.Properties;
-import nl.coralic.beta.sms.utils.Response;
-import nl.coralic.beta.sms.utils.SMSHelper;
 import nl.coralic.beta.sms.utils.SendHandler;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
@@ -99,6 +98,11 @@ public class Beta_SMS extends Activity
 		Log.logit(Const.TAG_MAIN, "Read properties.");
 		// you need to read the properties before showing balance
 		properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
+		
+		if (!Utils.checkForProperties(Beta_SMS.this, properties))
+		{
+			startActivity(new Intent(this, Properties.class));
+		}
 
 		// get the balance
 		showBalance();
@@ -273,51 +277,17 @@ public class Beta_SMS extends Activity
 		}
 		else
 		{
-			sh = new SendHandler(properties.getString("PasswordKey", ""), properties.getString("UsernameKey", ""), properties.getString("PhoneKey",
-					""), to.getText().toString(), txtSmsText.getText().toString(), properties.getString("ServiceKey", ""));
-			showStatusAlert = new ProgressDialog(this);
-			showStatusAlert.setMessage(getString(R.string.ALERT_SEND_MSG));
-			showStatusAlert.setIndeterminate(true);
-
-			AsyncTask<Void, Void, Response> task = new AsyncTask<Void, Void, Response>() {
-				@Override
-				protected void onPreExecute()
-				{
-					showStatusAlert.show();
-				}
-
-				@Override
-				protected Response doInBackground(Void... v)
-				{
-					return sh.send(getApplicationContext());
-				}
-
-				@Override
-				protected void onPostExecute(Response anwser)
-				{
-					showStatusAlert.dismiss();
-					if (anwser.isSucceful() == true)
-					{
-						Toast.makeText(Beta_SMS.this, anwser.getResponse(), Toast.LENGTH_LONG).show();
-						SMSHelper sms = new SMSHelper();
-						if (properties.getBoolean("SaveSMSKey", false))
-						{
-							sms.addSMS(getContentResolver(), txtSmsText.getText().toString(), to.getText().toString());
-						}
-						if (properties.getBoolean("DeleteTextKey", false))
-						{
-							// reset everything to empty
-							txtSmsText.setText("");
-							to.setText("");
-						}
-					}
-					else
-					{
-						Toast.makeText(Beta_SMS.this, anwser.getError(), Toast.LENGTH_LONG).show();
-					}
-				}
-			};
-			task.execute();
+			Intent in = new Intent(this, BetaSMSService.class);
+			in.putExtra("number", to.getText().toString());
+			in.putExtra("sms", txtSmsText.getText().toString());
+			startService(in);
+			Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
+			if (properties.getBoolean("DeleteTextKey", false))
+			{
+				// reset everything to empty
+				txtSmsText.setText("");
+				to.setText("");
+			}
 		}
 	}
 

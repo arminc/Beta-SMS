@@ -29,7 +29,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
-public class WidgetUpdateService extends Service
+public class BetaSMSWidgetUpdateService extends Service
 {
 	@Override
 	public void onStart(Intent intent, int startId)
@@ -46,7 +46,7 @@ public class WidgetUpdateService extends Service
 	{
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(), R.layout.widgetmain);
 		SendHandler sh = new SendHandler();
-		SharedPreferences properties = PreferenceManager.getDefaultSharedPreferences(WidgetUpdateService.this);
+		SharedPreferences properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSWidgetUpdateService.this);
 		updateViews.setTextViewText(R.id.widget_textview, sh.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""),properties.getString("PasswordKey", "")));
 		return updateViews;
 	}

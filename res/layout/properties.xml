@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/gray">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/SET_PW">
 		<EditTextPreference android:key="@string/SET_USER_KEY"
 			android:title="@string/SET_USER_TITLE" android:dialogTitle="@string/SET_USER_TITLE_DIALOG" />
@@ -7,16 +7,16 @@
 			android:title="@string/SET_PW_TITLE" android:dialogTitle="@string/SET_PW_TITLE_DIALOG"
 			android:inputType="textPassword" />
 	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/SET_PHONE">
-		<EditTextPreference android:key="@string/SET_PHONE_KEY"
-			android:title="@string/SET_PHONE_TITLE" android:dialogTitle="@string/SET_PHONE_TITLE_DIALOG"
-			android:summary="@string/SET_PHONE_TITLE_HINT" />
-	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/SET_SERVICE">
 		<EditTextPreference android:key="@string/SET_SERVICE_KEY"
 			android:title="@string/SET_SERVICE_TITLE" android:dialogTitle="@string/SET_SERVICE_TITLE_DIALOG"
 			android:summary="@string/SET_SERVICE_TITLE_HINT"
 			android:defaultValue="www.webcalldirect.com" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/SET_PHONE">
+		<EditTextPreference android:key="@string/SET_PHONE_KEY"
+			android:title="@string/SET_PHONE_TITLE" android:dialogTitle="@string/SET_PHONE_TITLE_DIALOG"
+			android:summary="@string/SET_PHONE_TITLE_HINT" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/SET_SAVE_SMS">
 		<CheckBoxPreference android:key="@string/SET_SAVE_SMS_KEY"

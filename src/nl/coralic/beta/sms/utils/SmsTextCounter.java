@@ -53,7 +53,28 @@ public class SmsTextCounter implements TextWatcher
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count)
 	{
-		txtTextCount.setText("" + s.toString().length());
+		int sms = 0;
+		if(s.toString().length() > 640)
+		{
+			sms = 5;
+		}
+		else if(s.toString().length() > 480)
+		{
+			sms = 4;
+		}
+		else if(s.toString().length() > 320)
+		{
+			sms = 3;
+		}
+		else if(s.toString().length() > 160)
+		{
+			sms = 2;
+		}
+		else
+		{
+			sms = 1;
+		}
+		txtTextCount.setText(sms + "/" + s.toString().length());
 	}
 
 }

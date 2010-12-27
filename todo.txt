@@ -1,27 +1,27 @@
-
-
-
-
-- loging
-- error handling?
+Must have:
+- met notificatie bar werken
+	- netter maken, teksten in xml
+	- maak het mogelijk om herzenden toe te staan
 - preferences miniem houden en als je op moor click dan komt de rest
-- als je geen user/pass hebt gelijk naar preferences
-- kleine how to schrijven (help)
+	- background change? android:background="@drawable/gray"
+- bij release app market errors cleanen
+- error handling? voorkom FORCECLOSE!
+
+
+Should have:
+- testen op 21,22,23 android
+- geschikt maken voor 3 schermen (klein, mijn, tab)
 - get saldo testen (kanhet makkelijker?)
 - get saldo voor 12voip fixen
-- backup?
-
-- met notificatie bar werken in plaats van zo als je nu de wait window hebt staan
 - na het verzenden (saldo updaten, mischien ook widget updaten?)
+- wat gebeurt er als er meerdere berichten zijn en eerste gaat goed en de tweede fout?
+- engels, nederlands, spaans en bosnischs ondersteunen
+- ads
+
+Nice to have
+- on exit, save de gegevens en deze weer tonen als iemand terug komt?
+- dropdown menu, welke provider heb je een een veld other()
+- backup?
 - als je nu het scherm omdraait gaat die elke keer balance ophalen (zou dit anders moeten en zo ja hoe?)
 - widget preferences (hoe vaak die moet updaten) (maak een preference)
-- maak het mogelijk om herzenden toe te staan (dit moet dan nu via notificatie gebeuren)
-- wat gebeurt er als er meerdere berichten zijn en eerste gaat goed en de tweede fout?
 - naar meerdere mensen verzenden?
-- engels, nederlands, spaans en bosnischs ondersteunen
-- about me in html formaat(backup sms heeft het)
-- counter: SMS: 0 Characters: 0 -> SMS: 1 Characters: 134 of bv SMS: 2 Characters: 211 (of toch iets simpls?)
-- request menu item een logo
-- background aanpasbaar?
-- on exit, save de gegevens en deze weer tonen als iemand terug komt?
-

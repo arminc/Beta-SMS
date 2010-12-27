@@ -31,6 +31,7 @@ public class Const
 	public static final String TAG_PHH = "PhonesHandler";
 	public static final String TAG_CPLA = "CPlistAdapter";
 	public static final String TAG_UTILS = "Utils";
+	public static final String TAG_SERV = "BETASERVICE";
 	
 	public static final int PICK_CONTACT = 1;
 

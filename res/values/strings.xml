@@ -12,9 +12,9 @@
 
 	<string name="BUTTON_SEND">Send</string>
 	
-	<string name="CHK_BOX_SEND_NORMAL">Send normal:</string>
+	<string name="CHK_BOX_SEND_NORMAL">Send normal SMS:</string>
 
-	<string name="MAIN_COUNT_LABEL">Characters:</string>
+	<string name="MAIN_COUNT_LABEL">SMS length:</string>
 	
 	<string name="MAIN_BALANCE_LABEL">Balance:</string>
 
@@ -72,11 +72,7 @@
 	<string name="SET_DELETE_TEXT_KEY">DeleteTextKey</string>
 	<string name="SET_SHOW_BALANCE_KEY">ShowBalanceKey</string>
 
-	<string name="INFO">Beta-SMS application is made by Armin Čoralić and
-		is Open Source. If you wish to read more about the application or
-		track the progress visit the website at http://beta-sms.coralic.nl .
-		You can also visit my blog http://blog.coralic.nl to see my other
-		work.</string>
+	<string name="INFO">Beta-SMS application is made by Armin Čoralić and is released as opensource. If you wish to read more about the application or track the progress please visit the website at http://blog.coralic.nl/beta-sms . If you have an suggestion or a bug please register it here http://beta-sms.coralic.nl</string>
 	<string name="INFO_TITLE">Info about Beta-SMS</string>
 
 	<string name="ERR_CODE">Error: code </string>
@@ -89,6 +85,7 @@
 	<string name="SMS_DELIVERED_SUCCESS">SMS delivered!</string>
 	<string name="SMS_DELIVERED_FAILED">Could not deliver.</string>
 	<string name="SMS_FAILED_PARS_RESPONSE">Error: Parsing response</string>
+	<string name="SMS_SENDING">Sending SMS</string>
 	
 	<string name="MAIN_TO_EMPTY">Phone number can not be empty.</string>
 	<string name="MAIN_SMS_EMPTY">SMS text can not be empty.</string>
