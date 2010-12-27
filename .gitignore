@@ -1,3 +1,7 @@
 /doc/todo.txt
-/assets/*
-/bin/*
+bin/
+gen/
+assets/
+.settings/
+.classpath
+.project
