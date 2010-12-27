@@ -3,4 +3,5 @@
     <drawable name="green">#2db300</drawable>
     <drawable name="dark_green">#24660c</drawable>
     <drawable name="black">#000000</drawable>
+    <drawable name="gray">#CCCCCC</drawable>
 </resources>

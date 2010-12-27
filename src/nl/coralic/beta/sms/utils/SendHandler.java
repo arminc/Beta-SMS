@@ -80,22 +80,6 @@ public class SendHandler
 			return new Response(hh.send(uri, context), context);
 		}
 	}
-
-	public FeatureRequestResponse sendFeatureRequest(Context context, String data, String debug, String mail)
-	{
-		List<NameValuePair> postdata = new ArrayList<NameValuePair>();
-		postdata.add(new BasicNameValuePair("HASH", "99dae5fed1878dea1ee46a1bb0f8f149"));
-		postdata.add(new BasicNameValuePair("DATA", data));
-		postdata.add(new BasicNameValuePair("DEBUG", debug));
-		postdata.add(new BasicNameValuePair("MAIL", mail));
-		
-		String uri = "http://betasmsserver.coralic.nl/addissue";
-		HttpHandler hh = new HttpHandler();
-		HttpClient httpclient = hh.getHttpClient();
-		FeatureRequestResponse f = new FeatureRequestResponse(hh.doPost(httpclient,uri,postdata), context);
-		httpclient.getConnectionManager().shutdown();	
-		return f;
-	}
 	
 	public String getBalance(String url, String user, String pass)
 	{
@@ -126,6 +110,4 @@ public class SendHandler
 		httpclient.getConnectionManager().shutdown();	
 		return returnValue;
 	}
-	
-	
 }

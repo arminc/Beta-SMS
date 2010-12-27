@@ -24,7 +24,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Contacts.People;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -99,7 +99,7 @@ public class Beta_SMS extends Activity
 		to.setAdapter(phoneHandler.getContactsPhonesListAdapter(getContentResolver(), this));
 
 		// Set the intent for selecting the contact
-		intent = new Intent(Intent.ACTION_PICK, People.CONTENT_URI);
+		intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI); 
 
 		// When double taped it will fire up an intent for showing Contacts,
 		// when a contact is selected it will return and fire up
@@ -122,6 +122,7 @@ public class Beta_SMS extends Activity
 				}
 			}
 		});
+		txtSmsText.requestFocus();
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class Beta_SMS extends Activity
 				{
 					phoneHandler = new PhonesHandler();
 					Log.logit(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
-					return phoneHandler.getPhoneNumbersForSelectedContact(getContentResolver(), uris[0]);
+					return phoneHandler.getPhoneNumbersForSelectedContact2(getContentResolver(), uris[0]);
 				}
 
 				@Override

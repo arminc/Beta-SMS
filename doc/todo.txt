@@ -1,22 +1,27 @@
-- grote letters na een punt
+- what to ignor in git (kijk wat gesubmit is online)
 
---------------------------Versie 2.1------
-- dit allemaal in mijn online TODO na dat ik die hellemaal heb afgemaakt
+- loging
+- error handling?
+- preferences miniem houden en als je op moor click dan komt de rest
+- als je geen user/pass hebt gelijk naar preferences
+- kleine how to schrijven (help)
+- get saldo testen (kanhet makkelijker?)
+- get saldo voor 12voip fixen
+- backup?
 
 - licentie toevoegen in de code maar ook op de site etc..
-- site nog beter
-- code reviewen en aanpassen
+
+- met notificatie bar werken in plaats van zo als je nu de wait window hebt staan
 - na het verzenden (saldo updaten, mischien ook widget updaten?)
 - als je nu het scherm omdraait gaat die elke keer balance ophalen (zou dit anders moeten en zo ja hoe?)
 - widget preferences (hoe vaak die moet updaten) (maak een preference)
-- maak het mogelijk om herzenden toe te staan
+- maak het mogelijk om herzenden toe te staan (dit moet dan nu via notificatie gebeuren)
 - wat gebeurt er als er meerdere berichten zijn en eerste gaat goed en de tweede fout?
 - naar meerdere mensen verzenden?
 - engels, nederlands, spaans en bosnischs ondersteunen
 - about me in html formaat(backup sms heeft het)
-- counter: SMS: 0 Characters: 0 -> SMS: 1 Characters: 134 of bv SMS: 2 Characters: 211
+- counter: SMS: 0 Characters: 0 -> SMS: 1 Characters: 134 of bv SMS: 2 Characters: 211 (of toch iets simpls?)
 - request menu item een logo
-- na een crash detectie en dan gelijk naar de request activity
-- bij zenden van een request moet je wel een window hebben met sending
-- mogelijk maken dat je debug aan een uitzet om meer info te krijgen
+- background aanpasbaar?
+- on exit, save de gegevens en deze weer tonen als iemand terug komt?
 

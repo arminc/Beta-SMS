@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:background="@drawable/gray">
 	<PreferenceCategory android:title="@string/SET_PW">
 		<EditTextPreference android:key="@string/SET_USER_KEY"
 			android:title="@string/SET_USER_TITLE" android:dialogTitle="@string/SET_USER_TITLE_DIALOG" />

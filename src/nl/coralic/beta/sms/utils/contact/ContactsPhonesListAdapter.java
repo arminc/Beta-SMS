@@ -6,7 +6,7 @@ import nl.coralic.beta.sms.utils.constants.Const;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,12 +64,11 @@ public class ContactsPhonesListAdapter extends CursorAdapter implements Filterab
 		{
 			buffer = new StringBuilder();
 			buffer.append("UPPER(");
-			buffer.append(Contacts.ContactMethods.NAME);
+			buffer.append(ContactsContract.Contacts.DISPLAY_NAME);
 			buffer.append(") GLOB ?");
 			args = new String[] { constraint.toString().toUpperCase() + "*" };
 		}
-		return contentResolver.query(Contacts.Phones.CONTENT_URI, new String[] { Contacts.People._ID, Contacts.People.NUMBER, Contacts.People.NAME },
-				buffer == null ? null : buffer.toString(), args, Contacts.People.DEFAULT_SORT_ORDER);
+		return contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String[] {ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME},buffer == null ? null : buffer.toString(), args, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
 	}
 
 }
