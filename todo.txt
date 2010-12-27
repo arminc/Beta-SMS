@@ -1,4 +1,6 @@
-- what to ignor in git (kijk wat gesubmit is online)
+
+
+
 
 - loging
 - error handling?
@@ -8,8 +10,6 @@
 - get saldo testen (kanhet makkelijker?)
 - get saldo voor 12voip fixen
 - backup?
-
-- licentie toevoegen in de code maar ook op de site etc..
 
 - met notificatie bar werken in plaats van zo als je nu de wait window hebt staan
 - na het verzenden (saldo updaten, mischien ook widget updaten?)
