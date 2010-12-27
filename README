@@ -1,1 +1,41 @@
-Beta-SMS project.
+This is the Beta-SMS project. For more information please visit http://blog.coralic.nl/beta-sms
+
+VERSION 2.2
+Removed unnecessary code
+Dropped support for Android 1.6 and lower
+Fixed Contacts search for Android 2.0 and above
+
+VERSION 2.1
+Use informer.com for submitting ideas
+
+VERSION 2.0
+New layout
+You can select Beta-SMS as default app to send your SMS
+Show balance
+Widget show balance
+Auto complete contact
+SMS text counter
+Send normal sms too
+Send more than 160 chars(will be split and send separately)
+And much more
+
+VERSION 1.4
+Added Dutch language support.
+You can request features.
+
+VERSION 1.3
+Save SMS to "Messages Inbox", this allows you to follow the conversation in the "Messages". 
+
+VERSION 1.2
+Time out fix
+
+VERSION 1.1
+Better error handling for SMS sending
+Using properties instead of database for efficiency
+Better phone numbers class 
+
+VERSION 1.0
+- Can save user/pass combo, who is sending it, different url's
+- Can send SMS to different Betamax resellers
+- Can brows contacts
+- Can select witch phone to use 
