@@ -4,6 +4,7 @@ VERSION 2.2
 Removed unnecessary code
 Dropped support for Android 1.6 and lower
 Fixed Contacts search for Android 2.0 and above
+Using notification bar, no more waiting
 
 VERSION 2.1
 Use informer.com for submitting ideas

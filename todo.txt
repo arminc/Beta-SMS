@@ -7,13 +7,12 @@ Must have:
 
 Should have:
 - get saldo voor 12voip fixen
-- preferences miniem houden en als je op moor click dan komt de rest
-	- background change? android:background="@drawable/gray"
 - testen op 21,22,23 android
 - geschikt maken voor 3 schermen (klein, mijn, tab)
-- na het verzenden (saldo updaten, mischien ook widget updaten?)
 - wat gebeurt er als er meerdere berichten zijn en eerste gaat goed en de tweede fout?
 - ads
+- preferences miniem houden en als je op moor click dan komt de rest
+	- background change? android:background="@drawable/gray"
 
 
 Nice to have
@@ -26,3 +25,4 @@ Nice to have
 - notificatie bar teksten in xml
 - engels, nederlands, spaans en bosnischs ondersteunen
 - onnodige texten uit XML halen
+- na het verzenden (saldo updaten, mischien ook widget updaten?)
