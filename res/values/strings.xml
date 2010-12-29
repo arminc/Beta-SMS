@@ -76,9 +76,10 @@
 	<string name="INFO_TITLE">Info about Beta-SMS</string>
 
 	<string name="ERR_CODE">Error: code </string>
-	<string name="ERR_TIMEOUT">Error: Timeout</string>
-	<string name="ERR_PROT">Error: Protocol problems</string>
-	<string name="ERR_IO">Error: IO problems</string>
+	<string name="ERR_TIMEOUT">Connection timed out</string>
+	<string name="ERR_PROT">Protocol problems</string>
+	<string name="ERR_IO">IO problems</string>
+	<string name="ERR_UEE">Unsupported Encoding</string>
 
 	<string name="SMS_SEND_SUCCESS">SMS send!</string>
 	<string name="SMS_SEND_FAILED">Unknown cause, failed.</string>

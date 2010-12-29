@@ -39,7 +39,7 @@ public class Utils
 	 */
 	public static String stripString(String data)
 	{
-		return data.replace("sms:", "").replace(" ", "").replace("(0)", "").replace("-", "").replace(".", "").replace("(", "").replace(")", "");
+		return data.replace("sms:", "").replace("smstop:", "").replace(" ", "").replace("(0)", "").replace("-", "").replace(".", "").replace("(", "").replace(")", "");
 	}
 
 	/**
@@ -120,24 +120,4 @@ public class Utils
 		}
 		return smsSplit;
 	}
-
-	public static String getBalance(String data)
-	{
-		int firstposition = data.indexOf("balanceid");
-		if (firstposition != -1)
-		{
-			Log.logit(Const.TAG_UTILS, "Balance is here!");
-			String subString = data.substring(firstposition, firstposition + 40);
-			System.out.println(subString);
-			int one = subString.lastIndexOf(";");
-			int two = subString.indexOf("<");
-			return subString.substring(one + 1, two);
-		}
-		else
-		{
-			Log.logit(Const.TAG_UTILS, "Balance is not here on the page!");
-			return "?";
-		}
-	}
-
 }

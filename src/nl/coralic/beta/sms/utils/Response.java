@@ -20,13 +20,14 @@
  */
 package nl.coralic.beta.sms.utils;
 
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import nl.coralic.beta.sms.R;
 import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.http.HttpHandler;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,13 +50,13 @@ public class Response
 		
 	}
 	
-	public Response(String data, Context con)
+	public Response(HttpHandler http, Context conx)
 	{
-		context = con;
-		// do something
-		if (!data.startsWith("Error:") && !data.startsWith("Fout:")) 
+		context = conx;
+		// check status, error etc...
+		if (http.getErrorMessage() == null && http.getResponseCode() == 200) 
 		{
-			data = data.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
+			String data = http.getResponse().replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
 			Document doc = getDocument(data);
 
 			if (doc != null)
@@ -78,7 +79,6 @@ public class Response
 					}
 					else
 					{
-						//TODO: translate the error messages to other languages
 						setError(tmpCause);
 					}
 					setSucceful(false);
@@ -86,14 +86,14 @@ public class Response
 			}
 			else
 			{
-				Log.d(Const.TAG_SEND, "Error doc is null");
+				Log.d(Const.TAG_RSP, "Error doc is null");
 				setError(context.getString(R.string.SMS_FAILED_PARS_RESPONSE));
 				setSucceful(false);
 			}
 		}
 		else
 		{
-			setError(data);
+			setError(http.getErrorMessage());
 			setSucceful(false);
 		}
 
@@ -136,12 +136,12 @@ public class Response
 		try
 		{
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			StringBufferInputStream sbis = new StringBufferInputStream(data);
-			ret = builder.parse(sbis);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.getBytes());
+			ret = builder.parse(byteArrayInputStream);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			Log.d(Const.TAG_RSP, e.getLocalizedMessage());
 			setError(context.getString(R.string.SMS_FAILED_PARS_RESPONSE));
 			setSucceful(false);
 		}

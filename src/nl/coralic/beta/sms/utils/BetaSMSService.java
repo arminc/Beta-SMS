@@ -28,6 +28,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
@@ -44,45 +45,74 @@ public class BetaSMSService extends Service
 	@Override
 	public void onCreate()
 	{
+		Log.logit(Const.TAG_SERV, "Crate service.");
 		properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSService.this);
 	}
-
+	
+	@Override
+	public void onStart(Intent intent, int startId)
+	{
+		Log.logit(Const.TAG_SERV, "Start service.");
+	}
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		Log.logit(Const.TAG_SERV, "Trying to send SMS.");
 		String to = intent.getExtras().getString("number");
 		String sms = intent.getExtras().getString("sms");
-		SendHandler sh = new SendHandler(properties.getString("PasswordKey", ""), properties.getString("UsernameKey", ""), properties.getString("PhoneKey",
-		""), to, sms, properties.getString("ServiceKey", ""));
-		Response  anwser = sh.send(getApplicationContext());
-		if (anwser.isSucceful() == true)
-		{
-			SMSHelper smsHelper = new SMSHelper();
-			if (properties.getBoolean("SaveSMSKey", false))
+		
+		AsyncTask<String, Void, Response> task = new AsyncTask<String, Void, Response>() {
+			
+			private String to;
+			private String sms;
+			private int startId;
+
+			@Override
+			protected Response doInBackground(String... s)
 			{
-				smsHelper.addSMS(getContentResolver(), sms, to);
+				to = s[0];
+				sms = s[1];
+				startId = Integer.valueOf(s[2]);
+				SendHandler sh = new SendHandler(properties.getString("PasswordKey", ""), properties.getString("UsernameKey", ""), properties.getString("PhoneKey",
+				""), to, sms, properties.getString("ServiceKey", ""));
+				Log.logit(Const.TAG_SERV, "Trying to send : " + to + " " + sms);
+				return sh.send(getApplicationContext());
 			}
-		}
-		else
-		{
-			NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-			int icon = R.drawable.ic_menu_send;
-			CharSequence text = "Beta-SMS faild to send";
-			CharSequence contentTitle = "Beta-SMS faild to send SMS";
-			CharSequence contentText = "Faild for "+to+ " . Tap to resend.";
-			long when = System.currentTimeMillis();
+			@Override
+			protected void onPostExecute(Response anwser)
+			{
+				if (anwser.isSucceful() == true)
+				{
+					SMSHelper smsHelper = new SMSHelper();
+					if (properties.getBoolean("SaveSMSKey", false))
+					{
+						smsHelper.addSMS(getContentResolver(), sms, to);
+					}
+				}
+				else
+				{
+					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-			Intent i = new Intent(this, Beta_SMS.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, flags);
+					int icon = R.drawable.ic_dialog_alert;
+					CharSequence text = "Beta-SMS failed to send SMS";
+					CharSequence contentTitle = "Can't send to: "+to;
+					CharSequence contentText = anwser.getError();
+					long when = System.currentTimeMillis();
 
-			Notification notification = new Notification(icon,text,when);
-
-			notification.setLatestEventInfo(this, contentTitle, contentText, contentIntent);
-
-			notificationManager.notify(startId, notification);
-		}
+					Intent i = new Intent(getApplicationContext(), Beta_SMS.class);
+					i.putExtra("number", to);
+					i.putExtra("sms", sms);
+					PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+					Notification notification = new Notification(icon,text,when);
+					notification.flags |= Notification.FLAG_AUTO_CANCEL;
+					notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
+					notificationManager.notify(startId, notification);
+				}
+			}
+		};
+		task.execute(to,sms,String.valueOf(startId));
 		return 1;
 	}
 }

@@ -18,9 +18,11 @@
 package nl.coralic.beta.sms;
 
 import java.net.URLDecoder;
+import java.util.Iterator;
 
 import nl.coralic.beta.sms.log.Log;
 import nl.coralic.beta.sms.utils.AndroidSMS;
+import nl.coralic.beta.sms.utils.BalanceHandler;
 import nl.coralic.beta.sms.utils.BetaSMSService;
 import nl.coralic.beta.sms.utils.Properties;
 import nl.coralic.beta.sms.utils.SendHandler;
@@ -74,12 +76,15 @@ public class Beta_SMS extends Activity
 	AlertDialog chooseNumberAlert;
 	ProgressDialog showStatusAlert;
 	public SharedPreferences properties;
+	String intentToValue;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-
+		intentToValue = null;
+		checkForIntent(getIntent());
+		
 		// Set the view
 		Log.logit(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
 		super.onCreate(savedInstanceState);
@@ -104,17 +109,13 @@ public class Beta_SMS extends Activity
 			startActivity(new Intent(this, Properties.class));
 		}
 
+		if(intentToValue != null)
+		{
+			to.setText(intentToValue);
+		}
 		// get the balance
 		showBalance();
-
-		// check if the app is started from an intent (send sms) if so strip the number and show it in the to field
-		Intent recintent = getIntent();
-		if (recintent.getData() != null)
-		{
-			Log.logit(Const.TAG_MAIN, "Got an non empty Intent.");
-			checkDataIncomingIntent(recintent);
-		}
-
+		
 		// auto complete contacts, show all phones
 		phoneHandler = new PhonesHandler();
 		to.setAdapter(phoneHandler.getContactsPhonesListAdapter(getContentResolver(), this));
@@ -215,7 +216,7 @@ public class Beta_SMS extends Activity
 	{
 		Log.logit(Const.TAG_MAIN, "The intent data.");
 		String param = Utils.stripString(recintent.getDataString());
-		to.setText(URLDecoder.decode(param));
+		intentToValue = URLDecoder.decode(param);
 	}
 
 	/**
@@ -311,7 +312,6 @@ public class Beta_SMS extends Activity
 
 	private void showBalance()
 	{
-
 		if (properties.getBoolean("ShowBalanceKey", false))
 		{
 			Log.logit(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
@@ -320,8 +320,8 @@ public class Beta_SMS extends Activity
 				@Override
 				protected String doInBackground(Void... v)
 				{
-					SendHandler sh = new SendHandler();
-					return sh.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString(
+					BalanceHandler balance = new BalanceHandler();
+					return balance.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString(
 							"PasswordKey", ""));
 				}
 
@@ -332,6 +332,37 @@ public class Beta_SMS extends Activity
 				}
 			};
 			task.execute();
+		}
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		stopService(new Intent(this, BetaSMSService.class));
+		super.onDestroy();
+	}
+	
+	private void checkForIntent(Intent recintent)
+	{
+		Bundle extras = recintent.getExtras();
+		if(extras != null)
+		{
+			Iterator<String> i = extras.keySet().iterator();
+			while(i.hasNext())
+			{
+				String tmp = i.next();
+				Log.logit(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
+			}
+			Intent in = new Intent(this, BetaSMSService.class);
+			in.putExtra("number", extras.getString("number"));
+			in.putExtra("sms", extras.getString("sms"));
+			startService(in);
+			this.finish();
+		}
+		else if (recintent.getData() != null)
+		{
+			Log.logit(Const.TAG_MAIN, "Got an non empty Intent.");
+			checkDataIncomingIntent(recintent);
 		}
 	}
 }
