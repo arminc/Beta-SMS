@@ -58,7 +58,7 @@ public class HttpHandler
 	private String url;
 
 	private int responseCode;
-	private String errMessage;
+	private String errMessage = null;
 	private Context context;
 	private Header[] allHeaders;
 

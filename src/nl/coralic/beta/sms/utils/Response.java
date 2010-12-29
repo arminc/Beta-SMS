@@ -54,7 +54,7 @@ public class Response
 	{
 		context = conx;
 		// check status, error etc...
-		if (http.getErrorMessage() == null && http.getResponseCode() == 200) 
+		if (http.getResponseCode() == 200) 
 		{
 			String data = http.getResponse().replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
 			Document doc = getDocument(data);
