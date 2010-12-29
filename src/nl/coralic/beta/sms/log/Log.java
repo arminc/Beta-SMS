@@ -21,7 +21,7 @@ package nl.coralic.beta.sms.log;
  */
 public class Log
 {
-	private static boolean logAllowed = true;
+	private static boolean logAllowed = false;
 	/**
 	 * With this class it's possible to turn and turn off logging
 	 * @param type is the tag so you can recognize who is logging
