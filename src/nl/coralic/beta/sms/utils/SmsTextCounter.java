@@ -39,17 +39,16 @@ public class SmsTextCounter implements TextWatcher
 	@Override
 	public void afterTextChanged(Editable s)
 	{
-		// Auto-generated method stub
-
+		//Not needed
 	}
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after)
 	{
-		// Auto-generated method stub
-
+		//Not needed
 	}
 
+	//Calculates until 5 messages
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count)
 	{

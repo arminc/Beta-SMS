@@ -51,10 +51,10 @@ public class SendHandler
 	 */
 	public SendHandler(String password, String username, String from, String to, String text, String url)
 	{
-		this.password = URLEncoder.encode(password);
-		this.username = URLEncoder.encode(username);
-		this.from = URLEncoder.encode(from);
-		this.to = URLEncoder.encode(to);
+		this.password = password;
+		this.username = username;
+		this.from = from.replace("+", "00");
+		this.to = to.replace("+", "00");;
 		this.text = Utils.splitSmsTextTo160Chars(text);
 		if (url != null && !url.equalsIgnoreCase(""))
 		{

@@ -52,7 +52,7 @@ public class PhoneNumber
 
 	public String getPhoneNumberClean()
 	{
-		return phoneNumber.replace("-", "");
+		return phoneNumber.replace("-", "").replace("+", "00");
 	}
 	
 	public String getLabel()

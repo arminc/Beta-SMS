@@ -162,7 +162,7 @@ public class Beta_SMS extends Activity
 				{
 					phoneHandler = new PhonesHandler();
 					Log.logit(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
-					return phoneHandler.getPhoneNumbersForSelectedContact2(getContentResolver(), uris[0]);
+					return phoneHandler.getPhoneNumbersForSelectedContact(getContentResolver(), uris[0]);
 				}
 
 				@Override

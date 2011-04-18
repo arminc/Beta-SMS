@@ -39,7 +39,7 @@ public class PhonesHandler
 	 * @param contactUri
 	 * @return object containing contacts phone numbers
 	 */	
-	public PhoneNumbers getPhoneNumbersForSelectedContact2(ContentResolver contentResolver, Uri contactUri)
+	public PhoneNumbers getPhoneNumbersForSelectedContact(ContentResolver contentResolver, Uri contactUri)
 	{
 		PhoneNumbers phones = new PhoneNumbers();
 		Log.logit(Const.TAG_PHH, "contactUri: " + contactUri);

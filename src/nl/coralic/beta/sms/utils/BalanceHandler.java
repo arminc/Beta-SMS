@@ -17,11 +17,14 @@
  */
 package nl.coralic.beta.sms.utils;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.coralic.beta.sms.log.Log;
 import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.http.HttpHandler;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -42,14 +45,7 @@ public class BalanceHandler
 	public String getBalance(String url, String user, String pass)
 	{
 		Log.logit(Const.TAG_BLC, "Try to get the balance.");
-		if(url.contains("12voip"))
-		{
-			return getBalanceFor12voip(url, user, pass);
-		}
-		else
-		{
-			return getBalanceForAll(url, user, pass);
-		}
+		return getBalanceForAll(url, user, pass);
 	}
 	
 	private String getBalanceForAll(String url, String user, String pass)
@@ -62,46 +58,13 @@ public class BalanceHandler
 		
 		HttpClient httpclient = getHttpClient();
 		Log.logit(Const.TAG_BLC, "First call for balance.");
-		if(doPost(httpclient,"https://"+url+"/myaccount/index.php?part=tplogin&",postdata) != null)
-		{
-			Log.logit(Const.TAG_BLC, "Second call for balance.");
-			if(doGet(httpclient, "https://"+url+"/myaccount/index.php?part=menu&justloggedin=true") != null)
-			{
-				Log.logit(Const.TAG_BLC, "Last call for balance.");
-				String data = doGet(httpclient, "https://"+url+"/myaccount/contacts.php");
-				if(data != null)
-				{
-					Log.logit(Const.TAG_BLC, "Got anwser from contacts.php.");
-					returnValue = getBalance(data);
-				}
-			}
+		String data = doGet(httpclient, "https://"+url+"/myaccount/getbalance.php?username="+URLEncoder.encode(user)+"&password="+URLEncoder.encode(pass));
+		httpclient.getConnectionManager().shutdown();
+		if(data == null)
+		{		
+			return "*";
 		}
-		httpclient.getConnectionManager().shutdown();	
-		return returnValue;
-	}
-	
-	private String getBalanceFor12voip(String url, String user, String pass)
-	{
-		return "*";
-	}
-	
-	private String getBalance(String data)
-	{
-		int firstposition = data.indexOf("balanceid");
-		if (firstposition != -1)
-		{
-			Log.logit(Const.TAG_BLC, "Balance is here!");
-			String subString = data.substring(firstposition, firstposition + 40);
-			System.out.println(subString);
-			int one = subString.lastIndexOf(";");
-			int two = subString.indexOf("<");
-			return subString.substring(one + 1, two);
-		}
-		else
-		{
-			Log.logit(Const.TAG_BLC, "Balance is not here on the page!");
-			return "?";
-		}
+		return data;
 	}
 	
 	private HttpClient getHttpClient()

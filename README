@@ -1,10 +1,13 @@
 This is the Beta-SMS project. For more information please visit http://blog.coralic.nl/beta-sms
 
+VERSION 2.3
+International numbers fix
+
 VERSION 2.2
-Removed unnecessary code
 Dropped support for Android 1.6 and lower
 Fixed Contacts search for Android 2.0 and above
 Using notification bar, no more waiting
+Removed unnecessary code
 
 VERSION 2.1
 Use informer.com for submitting ideas
