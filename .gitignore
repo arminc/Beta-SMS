@@ -2,7 +2,6 @@
 .project
 .settings
 .classpath
-default.properties
 
 #Ignore generated folders
 gen

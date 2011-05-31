@@ -36,20 +36,17 @@ public class SmsTextCounter implements TextWatcher
 		this.txtTextCount = txtTextCount;
 	}
 
-	@Override
 	public void afterTextChanged(Editable s)
 	{
 		//Not needed
 	}
 
-	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after)
 	{
 		//Not needed
 	}
 
 	//Calculates until 5 messages
-	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count)
 	{
 		int sms = 0;
