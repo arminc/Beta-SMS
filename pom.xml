@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>nl.coralic</groupId>
 		<artifactId>Beta-SMS-parent</artifactId>
-		<version>${betasmsVersion}</version>
+		<version>1</version>
 	</parent>
 
 	<groupId>nl.coralic</groupId>
@@ -35,55 +35,11 @@
 		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
-		<resources>
-			<!-- a pair definition for resource filtering of xml files only (not binary 
-				files since they get mangled -->
-			<resource>
-				<directory>${project.basedir}/res</directory>
-				<filtering>true</filtering>
-				<targetPath>${project.build.directory}/filtered-res</targetPath>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/res</directory>
-				<filtering>false</filtering>
-				<targetPath>${project.build.directory}/filtered-res</targetPath>
-				<excludes>
-					<exclude>**/*.xml</exclude>
-				</excludes>
-			</resource>
-
-			<resource>
-				<directory>${project.basedir}</directory>
-				<filtering>true</filtering>
-				<targetPath>${project.build.directory}/filtered-manifest</targetPath>
-				<includes>
-					<include>AndroidManifest.xml</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
-		<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>resources</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>maven-android-plugin</artifactId>
 				<extensions>true</extensions>
-				<configuration>
-					<androidManifestFile>${project.build.directory}/filtered-manifest/AndroidManifest.xml</androidManifestFile>
-					<resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>
-				</configuration>
 				<executions>
 					<execution>
 						<id>startEmulator</id>
