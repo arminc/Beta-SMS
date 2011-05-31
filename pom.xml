@@ -87,7 +87,7 @@
 				<executions>
 					<execution>
 						<id>startEmulator</id>
-						<phase>initialize</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>emulator-start</goal>
 						</goals>
