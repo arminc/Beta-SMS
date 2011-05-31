@@ -95,6 +95,5 @@
 	<string name="REQUEST_TEXT">Text:</string>
 	<string name="REQUEST_TEXT_HINT">Your request text goes here...</string>
 	<string name="CHK_BOX_ATTACH_LOG">Attach log:</string>
-	
 	<string name="SMSTO_INTENT_WRONG">Could not read the recipients number or SMS text.</string> 
 </resources>
