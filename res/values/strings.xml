@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Beta-SMS</string>
+	<string name="widget_name">Beta-SMS Widget</string>
+
+	<string name="MAIN_TO">To:</string>
+	<string name="MAIN_TO_HINT">Double tap or auto complete</string>
+	<string name="MAIN_TO_HINT_AUTO">Typing * will show all of your contacts.</string>
+
+	<string name="MAIN_SMSTEXT">SMS:</string>
+	<string name="MAIN_SMSTEXT_HINT">Your SMS text goes here...</string>
+
+	<string name="BUTTON_SEND">Send</string>
+	
+	<string name="CHK_BOX_SEND_NORMAL">Send normal SMS:</string>
+
+	<string name="MAIN_COUNT_LABEL">SMS length:</string>
+	
+	<string name="MAIN_BALANCE_LABEL">Balance:</string>
+
+	<string name="ALERT_CHOOSE_NUM_TITLE">Pick a number?</string>
+	<string name="ALERT_SEND_MSG">Sending.</string>
+
+	<string name="SET_PW">Username and Password</string>
+
+	<string name="SET_USER_TITLE">Username</string>
+	<string name="SET_USER_TITLE_DIALOG">Your username please...</string>
+
+	<string name="SET_PW_TITLE">Password</string>
+	<string name="SET_PW_TITLE_DIALOG">Your password please...</string>
+
+	<string name="SET_PHONE">Phone number</string>
+
+	<string name="SET_PHONE_TITLE">Phone number</string>
+	<string name="SET_PHONE_TITLE_DIALOG">Your phone number please...</string>
+	<string name="SET_PHONE_TITLE_HINT">Your nick or cell number</string>
+
+	<string name="SET_SERVICE">Service URL</string>
+
+	<string name="SET_SERVICE_TITLE">Service URL</string>
+	<string name="SET_SERVICE_TITLE_DIALOG">Your service URL please...</string>
+	<string name="SET_SERVICE_TITLE_HINT">Default: www.webcalldirect.com (Don\'t use http://)
+	</string>
+
+	<string name="SET_SAVE_SMS">SMS preferences</string>
+
+	<string name="SET_SAVE_SMS_TITLE">Save SMS</string>
+	<string name="SET_SAVE_SMS_TITLE_DIALOG">Add the send SMS to you Inbox.</string>
+	<string name="SET_DELETE_TEXT_TITLE">Delete text</string>
+	<string name="SET_DELETE_TEXT_TITLE_DIALOG">Clear all text after sms send.</string>
+	
+		<string name="SET_SHOW_BALANCE_TITLE">Show balance</string>
+	<string name="SET_SHOW_BALANCE_TITLE_DIALOG">Toggle show balance.</string>
+
+	<string name="MENU_INFO">Info</string>
+	<string name="MENU_SET">Settings</string>
+	<string name="MENU_FEATURE">Feature</string>
+	<string name="MENU_REQUEST">Request</string>
+	<string name="MENU_EXIT">Exit</string>
+
+	<string name="NO_USER">No username. \n</string>
+	<string name="NO_PASS">No password. \n</string>
+	<string name="NO_NUMBER">No phone number or username. \n</string>
+	<string name="NO_URL">No service url. \n</string>
+	<string name="NO_INFO">Please fill the properties!</string>
+
+	<string name="SET_USER_KEY">UsernameKey</string>
+	<string name="SET_PW_KEY">PasswordKey</string>
+	<string name="SET_PHONE_KEY">PhoneKey</string>
+	<string name="SET_SERVICE_KEY">ServiceKey</string>
+	<string name="SET_SAVE_SMS_KEY">SaveSMSKey</string>
+	<string name="SET_DELETE_TEXT_KEY">DeleteTextKey</string>
+	<string name="SET_SHOW_BALANCE_KEY">ShowBalanceKey</string>
+
+	<string name="INFO">Beta-SMS application is made by Armin Čoralić and is released as opensource. If you wish to read more about the application or track the progress please visit the website at http://blog.coralic.nl/beta-sms . If you have an suggestion or a bug please register it here http://beta-sms.coralic.nl</string>
+	<string name="INFO_TITLE">Info about Beta-SMS</string>
+
+	<string name="ERR_CODE">Error: code </string>
+	<string name="ERR_TIMEOUT">Connection timed out</string>
+	<string name="ERR_PROT">Protocol problems</string>
+	<string name="ERR_IO">IO problems</string>
+	<string name="ERR_UEE">Unsupported Encoding</string>
+
+	<string name="SMS_SEND_SUCCESS">SMS send!</string>
+	<string name="SMS_SEND_FAILED">Unknown cause, failed.</string>
+	<string name="SMS_DELIVERED_SUCCESS">SMS delivered!</string>
+	<string name="SMS_DELIVERED_FAILED">Could not deliver.</string>
+	<string name="SMS_FAILED_PARS_RESPONSE">Error: Parsing response</string>
+	<string name="SMS_SENDING">Sending SMS</string>
+	
+	<string name="MAIN_TO_EMPTY">Phone number can not be empty.</string>
+	<string name="MAIN_SMS_EMPTY">SMS text can not be empty.</string>
+	
+	<string name="REQUEST_EMAIL">Email:</string>
+	<string name="REQUEST_TEXT">Text:</string>
+	<string name="REQUEST_TEXT_HINT">Your request text goes here...</string>
+	<string name="CHK_BOX_ATTACH_LOG">Attach log:</string>
+	
+	<string name="SMSTO_INTENT_WRONG">Could not read the recipients number or SMS text.</string> 
+</resources>

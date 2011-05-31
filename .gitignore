@@ -1,0 +1,10 @@
+#Ignore eclipse files
+.project
+.settings
+.classpath
+default.properties
+
+#Ignore generated folders
+gen
+target
+assets
