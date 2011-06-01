@@ -18,7 +18,7 @@
 package nl.coralic.beta.sms.widget;
 
 import nl.coralic.beta.sms.R;
-import nl.coralic.beta.sms.utils.BalanceHandler;
+import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -45,9 +45,8 @@ public class BetaSMSWidgetUpdateService extends Service
 	public RemoteViews buildUpdate(Context context)
 	{
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(), R.layout.widgetmain);
-		BalanceHandler balance = new BalanceHandler();
 		SharedPreferences properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSWidgetUpdateService.this);
-		updateViews.setTextViewText(R.id.widget_textview, balance.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""),properties.getString("PasswordKey", "")));
+		updateViews.setTextViewText(R.id.widget_textview, BetamaxHandler.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""),properties.getString("PasswordKey", "")));
 		return updateViews;
 	}
 

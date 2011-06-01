@@ -20,13 +20,13 @@
  */
 package nl.coralic.beta.sms.utils.contact;
 
-import nl.coralic.beta.sms.log.Log;
-import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.objects.Const;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 /**
  * @author "Armin Čoralić"
@@ -42,9 +42,9 @@ public class PhonesHandler
 	public PhoneNumbers getPhoneNumbersForSelectedContact(ContentResolver contentResolver, Uri contactUri)
 	{
 		PhoneNumbers phones = new PhoneNumbers();
-		Log.logit(Const.TAG_PHH, "contactUri: " + contactUri);
+		Log.d(Const.TAG_PHH, "contactUri: " + contactUri);
 		Cursor c =  contentResolver.query(contactUri, null, null, null, null);
-		Log.logit(Const.TAG_PHH, "Loop trough alle phones.");
+		Log.d(Const.TAG_PHH, "Loop trough alle phones.");
 		if (c.moveToFirst())
 		{
 			String contactId = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
@@ -72,7 +72,7 @@ public class PhonesHandler
 	 */
 	public ContactsPhonesListAdapter getContactsPhonesListAdapter(ContentResolver contentResolver, Context context)
 	{
-		Log.logit(Const.TAG_CPLA, "uri test: "+ ContactsContract.Contacts.CONTENT_URI);
+		Log.d(Const.TAG_CPLA, "uri test: "+ ContactsContract.Contacts.CONTENT_URI);
 		Cursor c = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String[] {ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null, null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");		
 		ContactsPhonesListAdapter adapter = new ContactsPhonesListAdapter(context, c);
 		return adapter;

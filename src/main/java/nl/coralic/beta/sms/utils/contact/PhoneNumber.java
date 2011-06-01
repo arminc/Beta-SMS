@@ -20,7 +20,7 @@
  */
 package nl.coralic.beta.sms.utils.contact;
 
-import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.objects.Const;
 
 /**
  * @author "Armin Čoralić"

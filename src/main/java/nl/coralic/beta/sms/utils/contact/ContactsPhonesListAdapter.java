@@ -17,13 +17,13 @@
  */
 package nl.coralic.beta.sms.utils.contact;
 
-import nl.coralic.beta.sms.log.Log;
 import nl.coralic.beta.sms.utils.Utils;
-import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.objects.Const;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +41,13 @@ public class ContactsPhonesListAdapter extends CursorAdapter implements Filterab
 	{
 		super(context, c);
 		contentResolver = context.getContentResolver();
-		Log.logit(Const.TAG_CPLA, "New");
+		Log.d(Const.TAG_CPLA, "New");
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent)
 	{
-		Log.logit(Const.TAG_CPLA, "New view");
+		Log.d(Const.TAG_CPLA, "New view");
 		final LayoutInflater inflater = LayoutInflater.from(context);
 		final TextView view = (TextView) inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 		view.setText(cursor.getString(2) + " " + cursor.getString(1));
@@ -57,14 +57,14 @@ public class ContactsPhonesListAdapter extends CursorAdapter implements Filterab
 	@Override
 	public void bindView(View view, Context context, Cursor cursor)
 	{
-		Log.logit(Const.TAG_CPLA, "bind to view");
+		Log.d(Const.TAG_CPLA, "bind to view");
 		((TextView) view).setText(cursor.getString(2) + " " + cursor.getString(1));
 	}
 
 	@Override
 	public String convertToString(Cursor cursor)
 	{
-		Log.logit(Const.TAG_CPLA, "convert to string");
+		Log.d(Const.TAG_CPLA, "convert to string");
 		return Utils.stripString(cursor.getString(1));
 	}
 

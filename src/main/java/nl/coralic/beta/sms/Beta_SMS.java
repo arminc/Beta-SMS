@@ -20,17 +20,15 @@ package nl.coralic.beta.sms;
 import java.net.URLDecoder;
 import java.util.Iterator;
 
-import nl.coralic.beta.sms.log.Log;
+import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import nl.coralic.beta.sms.utils.AndroidSMS;
-import nl.coralic.beta.sms.utils.BalanceHandler;
 import nl.coralic.beta.sms.utils.BetaSMSService;
 import nl.coralic.beta.sms.utils.Properties;
-import nl.coralic.beta.sms.utils.SendHandler;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
-import nl.coralic.beta.sms.utils.constants.Const;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
 import nl.coralic.beta.sms.utils.contact.PhonesHandler;
+import nl.coralic.beta.sms.utils.objects.Const;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,6 +41,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,7 +70,6 @@ public class Beta_SMS extends Activity
 
 	PhonesHandler phoneHandler;
 	PhoneNumbers phoneNumber;
-	SendHandler sh;
 
 	AlertDialog chooseNumberAlert;
 	ProgressDialog showStatusAlert;
@@ -86,7 +84,7 @@ public class Beta_SMS extends Activity
 		checkForIntent(getIntent());
 		
 		// Set the view
-		Log.logit(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
+		Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.betasmsmain);
 
@@ -100,7 +98,7 @@ public class Beta_SMS extends Activity
 
 		txtBalance = (TextView) findViewById(R.id.txtBalance);
 
-		Log.logit(Const.TAG_MAIN, "Read properties.");
+		Log.d(Const.TAG_MAIN, "Read properties.");
 		// you need to read the properties before showing balance
 		properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
 		
@@ -129,7 +127,7 @@ public class Beta_SMS extends Activity
 		to.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v)
 			{
-				Log.logit(Const.TAG_MAIN, "Double taped, show contacts");
+				Log.d(Const.TAG_MAIN, "Double taped, show contacts");
 				startActivityForResult(intent, Const.PICK_CONTACT);
 			}
 		});
@@ -153,7 +151,7 @@ public class Beta_SMS extends Activity
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data)
 	{
-		Log.logit(Const.TAG_MAIN, "User selected an contact.");
+		Log.d(Const.TAG_MAIN, "User selected an contact.");
 		if (reqCode == Const.PICK_CONTACT && resultCode == RESULT_OK)
 		{
 			AsyncTask<Uri, Void, PhoneNumbers> task = new AsyncTask<Uri, Void, PhoneNumbers>() {
@@ -161,14 +159,14 @@ public class Beta_SMS extends Activity
 				protected PhoneNumbers doInBackground(Uri... uris)
 				{
 					phoneHandler = new PhonesHandler();
-					Log.logit(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
+					Log.d(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
 					return phoneHandler.getPhoneNumbersForSelectedContact(getContentResolver(), uris[0]);
 				}
 
 				@Override
 				protected void onPostExecute(PhoneNumbers result)
 				{
-					Log.logit(Const.TAG_MAIN, "Present the numbers.");
+					Log.d(Const.TAG_MAIN, "Present the numbers.");
 					chooseNumber(result);
 				}
 			};
@@ -185,17 +183,17 @@ public class Beta_SMS extends Activity
 		this.phoneNumber = contact;
 		if (phoneNumber.getPhoneNumbersLabelArray().length == 1)
 		{
-			Log.logit(Const.TAG_MAIN, "Contact only has one number.");
+			Log.d(Const.TAG_MAIN, "Contact only has one number.");
 			to.setText(phoneNumber.getCleanPhoneNumber(0));
 		}
 		else
 		{
-			Log.logit(Const.TAG_MAIN, "Contact has multiple numbers showing all of them.");
+			Log.d(Const.TAG_MAIN, "Contact has multiple numbers showing all of them.");
 			builder.setTitle(phoneNumber.getContactsName());
 			builder.setItems(phoneNumber.getPhoneNumbersLabelArray(), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item)
 				{
-					Log.logit(Const.TAG_MAIN, "User selected an number of a contact.");
+					Log.d(Const.TAG_MAIN, "User selected an number of a contact.");
 					to.setText(phoneNumber.getCleanPhoneNumber(item));
 					phoneNumber = null;
 					chooseNumberAlert.dismiss();
@@ -214,7 +212,7 @@ public class Beta_SMS extends Activity
 	 */
 	private void checkDataIncomingIntent(Intent recintent)
 	{
-		Log.logit(Const.TAG_MAIN, "The intent data.");
+		Log.d(Const.TAG_MAIN, "The intent data.");
 		String param = Utils.stripString(recintent.getDataString());
 		intentToValue = URLDecoder.decode(param);
 	}
@@ -272,7 +270,7 @@ public class Beta_SMS extends Activity
 
 		if (chkSendNormal.isChecked())
 		{
-			Log.logit(Const.TAG_MAIN, "Send normal sms not trough betamax.");
+			Log.d(Const.TAG_MAIN, "Send normal sms not trough betamax.");
 			AndroidSMS sms = new AndroidSMS();
 			sms.sendSMS(Beta_SMS.this, to.getText().toString(), txtSmsText.getText().toString());
 		}
@@ -294,17 +292,17 @@ public class Beta_SMS extends Activity
 
 	private boolean checkIfFieldAreEmpty()
 	{
-		Log.logit(Const.TAG_MAIN, "Checking to see if all fields are filled.");
+		Log.d(Const.TAG_MAIN, "Checking to see if all fields are filled.");
 		if (to.getText().toString().length() < 1)
 		{
 			Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_TO_EMPTY), Toast.LENGTH_SHORT).show();
-			Log.logit(Const.TAG_MAIN, "To empty.");
+			Log.d(Const.TAG_MAIN, "To empty.");
 			return false;
 		}
 		if (txtSmsText.getText().toString().length() < 1)
 		{
 			Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_SMS_EMPTY), Toast.LENGTH_SHORT).show();
-			Log.logit(Const.TAG_MAIN, "SMS text empty.");
+			Log.d(Const.TAG_MAIN, "SMS text empty.");
 			return false;
 		}
 		return true;
@@ -314,14 +312,13 @@ public class Beta_SMS extends Activity
 	{
 		if (properties.getBoolean("ShowBalanceKey", false))
 		{
-			Log.logit(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
+			Log.d(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
 			AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
 				@Override
 				protected String doInBackground(Void... v)
 				{
-					BalanceHandler balance = new BalanceHandler();
-					return balance.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString(
+					return BetamaxHandler.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString(
 							"PasswordKey", ""));
 				}
 
@@ -351,7 +348,7 @@ public class Beta_SMS extends Activity
 			while(i.hasNext())
 			{
 				String tmp = i.next();
-				Log.logit(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
+				Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
 			}
 			Intent in = new Intent(this, BetaSMSService.class);
 			in.putExtra("number", extras.getString("number"));
@@ -361,7 +358,7 @@ public class Beta_SMS extends Activity
 		}
 		else if (recintent.getData() != null)
 		{
-			Log.logit(Const.TAG_MAIN, "Got an non empty Intent.");
+			Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
 			checkDataIncomingIntent(recintent);
 		}
 	}

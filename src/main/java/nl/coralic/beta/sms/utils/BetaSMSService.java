@@ -18,8 +18,9 @@
 package nl.coralic.beta.sms.utils;
 
 import nl.coralic.beta.sms.Beta_SMS;
-import nl.coralic.beta.sms.log.Log;
-import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.objects.Const;
+import nl.coralic.beta.sms.utils.objects.Response;
 import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -45,20 +46,20 @@ public class BetaSMSService extends Service
 	@Override
 	public void onCreate()
 	{
-		Log.logit(Const.TAG_SERV, "Crate service.");
 		properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSService.this);
 	}
 	
 	@Override
 	public void onStart(Intent intent, int startId)
 	{
-		Log.logit(Const.TAG_SERV, "Start service.");
+		
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-		Log.logit(Const.TAG_SERV, "Trying to send SMS.");
+	    //TODO: if the sms is bigger than 160charts it will fail, fix!
+		
 		String to = intent.getExtras().getString("number");
 		String sms = intent.getExtras().getString("sms");
 		
@@ -74,16 +75,14 @@ public class BetaSMSService extends Service
 				to = s[0];
 				sms = s[1];
 				startId = Integer.valueOf(s[2]);
-				SendHandler sh = new SendHandler(properties.getString("PasswordKey", ""), properties.getString("UsernameKey", ""), properties.getString("PhoneKey",
-				""), to, sms, properties.getString("ServiceKey", ""));
-				Log.logit(Const.TAG_SERV, "Trying to send : " + to + " " + sms);
-				return sh.send(getApplicationContext());
+				return BetamaxHandler.sendSMS(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString("PasswordKey", ""), properties.getString("PhoneKey",
+				""), to, sms);
 			}
 
 			@Override
 			protected void onPostExecute(Response anwser)
 			{
-				if (anwser.isSucceful() == true)
+				if (anwser.isResponseOke() == true)
 				{
 					SMSHelper smsHelper = new SMSHelper();
 					if (properties.getBoolean("SaveSMSKey", false))
@@ -98,7 +97,7 @@ public class BetaSMSService extends Service
 					int icon = R.drawable.ic_dialog_alert;
 					CharSequence text = "Beta-SMS failed to send SMS";
 					CharSequence contentTitle = "Can't send to: "+to;
-					CharSequence contentText = anwser.getError();
+					CharSequence contentText = anwser.getErrorMessage();
 					long when = System.currentTimeMillis();
 
 					Intent i = new Intent(getApplicationContext(), Beta_SMS.class);

@@ -20,10 +20,10 @@ package nl.coralic.beta.sms.utils;
 import java.util.ArrayList;
 
 import nl.coralic.beta.sms.R;
-import nl.coralic.beta.sms.log.Log;
-import nl.coralic.beta.sms.utils.constants.Const;
+import nl.coralic.beta.sms.utils.objects.Const;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -57,28 +57,28 @@ public class Utils
 		if (!properties.contains("UsernameKey") || properties.getString("UsernameKey", "").equalsIgnoreCase(""))
 		{
 			sb.append(context.getString(R.string.NO_USER));
-			Log.logit(Const.TAG_MAIN, "No username");
+			Log.d(Const.TAG_MAIN, "No username");
 			isEveryPropertieFilled = false;
 		}
 
 		if (!properties.contains("PasswordKey") || properties.getString("PasswordKey", "").equalsIgnoreCase(""))
 		{
 			sb.append(context.getString(R.string.NO_PASS));
-			Log.logit(Const.TAG_MAIN, "No password");
+			Log.d(Const.TAG_MAIN, "No password");
 			isEveryPropertieFilled = false;
 		}
 
 		if (!properties.contains("PhoneKey") || properties.getString("PhoneKey", "").equalsIgnoreCase(""))
 		{
 			sb.append(context.getString(R.string.NO_NUMBER));
-			Log.logit(Const.TAG_MAIN, "No phone");
+			Log.d(Const.TAG_MAIN, "No phone");
 			isEveryPropertieFilled = false;
 		}
 
 		if (!properties.contains("ServiceKey") || properties.getString("ServiceKey", "").equalsIgnoreCase(""))
 		{
 			sb.append(context.getString(R.string.NO_URL));
-			Log.logit(Const.TAG_MAIN, "No service url");
+			Log.d(Const.TAG_MAIN, "No service url");
 			isEveryPropertieFilled = false;
 		}
 

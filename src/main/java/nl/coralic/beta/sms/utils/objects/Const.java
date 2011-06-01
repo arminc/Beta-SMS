@@ -18,7 +18,7 @@
 /**
  * 
  */
-package nl.coralic.beta.sms.utils.constants;
+package nl.coralic.beta.sms.utils.objects;
 
 /**
  * @author "Armin Čoralić"
