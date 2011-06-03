@@ -45,8 +45,7 @@ public class Const
 	public static final String TYPE = "type";
 	public static final String BODY = "body";
 	public static final int MESSAGE_TYPE_INBOX = 1;
-	public static final int MESSAGE_TYPE_SENT = 2;
-	
+	public static final int MESSAGE_TYPE_SENT = 2;	
 	
 	public static final String TAG_HTTP = "HttpHandler";
 	

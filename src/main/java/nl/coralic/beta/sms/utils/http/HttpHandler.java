@@ -1,7 +1,5 @@
 package nl.coralic.beta.sms.utils.http;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +8,6 @@ import nl.coralic.beta.sms.utils.objects.Response;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -67,20 +64,12 @@ public class HttpHandler
 	    }
 	    else
 	    {
-		return new Response("Server did not respond correctly");
+		return new Response("Provider did not respond correctly");
 	    }
 	}
-	catch (UnsupportedEncodingException e)
+	catch (Exception e)
 	{
-	    return new Response(e.getMessage());
-	}
-	catch (ClientProtocolException e)
-	{
-	    return new Response(e.getMessage());
-	}
-	catch (IOException e)
-	{
-	    return new Response(e.getMessage());
+	    return new Response("Could not connect to the provider");
 	}
 	finally
 	{

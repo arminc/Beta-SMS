@@ -16,7 +16,7 @@ public class BetamaxHandler
     
     public static String getBalance(String tmpUrl, String username, String password)
     {
-	String url = getUrl(tmpUrl);
+	String url = getBalanceUrl(tmpUrl);
 	HashMap<String,String> arguments = new HashMap<String, String>();
 	arguments.put(USERNAME, username);
 	arguments.put(PASSWORD, password);
@@ -31,7 +31,7 @@ public class BetamaxHandler
     
     public static Response sendSMS(String tmpUrl, String username, String password, String from, String to, String text)
     {
-	String url = getUrl(tmpUrl);
+	String url = getSendSmsUrl(tmpUrl);
 	HashMap<String,String> arguments = new HashMap<String, String>(); 
 	arguments.put(USERNAME, username);
 	arguments.put(PASSWORD, password);
@@ -43,15 +43,20 @@ public class BetamaxHandler
 	Response response = HttpHandler.execute(url, arguments);
 	if(response.isResponseOke())
 	{
-	    BetamaxResponse betamaxResponse = (BetamaxResponse)response;
+	    BetamaxResponse betamaxResponse = new BetamaxResponse(response.isResponseOke(), response.getResponse());
 	    betamaxResponse.validateBetamaxResponse();
 	    return betamaxResponse;
 	}
 	return response;
     }
     
-    private static String getUrl(String tmpUrl)
+    private static String getBalanceUrl(String tmpUrl)
     {
 	return "https://"+tmpUrl+"/myaccount/getbalance.php";
+    }
+    
+    private static String getSendSmsUrl(String tmpUrl)
+    {
+	return "https://"+tmpUrl+"/myaccount/sendsms.php";
     }
 }

@@ -8,3 +8,7 @@ gen
 target
 assets
 bin
+
+#Ignore user properties
+realprovider.properties
+testprovider.properties

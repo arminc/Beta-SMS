@@ -25,8 +25,8 @@ public class BetamaxResponse extends Response
 	    root.normalize();
 	    if (!root.getElementsByTagName("resultstring").item(0).getFirstChild().getNodeValue().equalsIgnoreCase("success"))
 	    {
+		responseOke = false;
 		String tmpCause = root.getElementsByTagName("description").item(0).getFirstChild().getNodeValue();
-
 		if (tmpCause.equalsIgnoreCase(""))
 		{
 		    errorMessage = "Could not read response";

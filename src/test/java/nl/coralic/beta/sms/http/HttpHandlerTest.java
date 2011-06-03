@@ -26,6 +26,7 @@ public class HttpHandlerTest
     {
 	Response response  = HttpHandler.execute("", null);
 	assertFalse(response.isResponseOke());
+	assertEquals("No arguments", response.getErrorMessage());
     }
     
     @Test
@@ -33,13 +34,22 @@ public class HttpHandlerTest
     {	
 	Response response  = HttpHandler.execute("https://www.webcalldirect.com/myaccount/getbalance.php", arguments);
 	assertTrue(response.isResponseOke());
+	assertEquals("0", response.getResponse());
+    }
+    
+    @Test
+    public void exceptionTest()
+    {
+	Response response  = HttpHandler.execute("http://wrong", arguments);
+	assertFalse(response.isResponseOke());
+	assertEquals("Could not connect to the provider", response.getErrorMessage());
     }
     
     @Test
     public void wrongUrl()
     {
-	Response response  = HttpHandler.execute("http://wrong", arguments);
+	Response response  = HttpHandler.execute("https://www.webcalldirect.com/myaccount/getbalancefake.php", arguments);
 	assertFalse(response.isResponseOke());
-	System.err.println("Response error: " + response.getErrorMessage());
-    }
+	assertEquals("Provider did not respond correctly", response.getErrorMessage());
+    }    
 }
