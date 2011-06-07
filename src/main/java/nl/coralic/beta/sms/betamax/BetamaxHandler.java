@@ -35,10 +35,9 @@ public class BetamaxHandler
 	HashMap<String,String> arguments = new HashMap<String, String>(); 
 	arguments.put(USERNAME, username);
 	arguments.put(PASSWORD, password);
-	//TODO: IMPORTENT replacements done on the TO en FROM do we need to do them here or else?
+	//TODO: IMPORTENT replacements done on the TO en FROM, do we need to do them here or else?
 	arguments.put(TO, to);
 	arguments.put(TEXT, text);
-	//TODO: is from always necessary?
 	arguments.put(FROM, from);
 	Response response = HttpHandler.execute(url, arguments);
 	if(response.isResponseOke())
@@ -52,11 +51,11 @@ public class BetamaxHandler
     
     private static String getBalanceUrl(String tmpUrl)
     {
-	return "https://"+tmpUrl+"/myaccount/getbalance.php";
+	return "https://www."+tmpUrl+"/myaccount/getbalance.php";
     }
     
     private static String getSendSmsUrl(String tmpUrl)
     {
-	return "https://"+tmpUrl+"/myaccount/sendsms.php";
+	return "https://www."+tmpUrl+"/myaccount/sendsms.php";
     }
 }

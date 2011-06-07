@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="lblSelectProvider">Please select a Betamax provider</string>
+	<string-array name="providers">
+		<item>12voip.com</item>
+		<item>actionvoip.com</item>
+		<item>calleasy.com</item>
+		<item>cheapvoip.com</item>
+		<item>dialnow.com</item>
+		<item>freecall.com</item>
+		<item>internetcalls.com</item>
+		<item>intervoip.com</item>
+		<item>justvoip.com</item>
+		<item>lowratevoip.com</item>
+		<item>netappel.fr</item>
+		<item>nonoh.net</item>
+		<item>poivy.com</item>
+		<item>powervoip.com</item>
+		<item>rynga.com</item>
+		<item>sipdiscount.com</item>
+		<item>smartvoip.com</item>
+		<item>smsdiscount.com</item>
+		<item>smslisto.com</item>
+		<item>sparvoip.de</item>
+		<item>voipbuster.com</item>
+		<item>voipbusterpro.com</item>
+		<item>voipcheap.co.uk</item>
+		<item>voipcheap.com</item>
+		<item>voipdiscount.com</item>
+		<item>voipgain.com</item>
+		<item>voipian.com</item>
+		<item>voipraider.com</item>
+		<item>voipstunt.com</item>
+		<item>voipzoom.com</item>
+		<item>webcalldirect.com</item>
+	</string-array>
+	<string name="lblWelcome">Welcome</string>
+	<string name="lblUsername">Username:</string>
+	<string name="lblPassword">Password:</string>
+	<string name="btnWizardNext">Done</string>
+	<string name="SET_PW">Username and Password</string>
+	<string name="SET_USER_TITLE">Username</string>
+	<string name="SET_USER_TITLE_DIALOG">Your username</string>
+	<string name="SET_PW_TITLE">Password</string>
+	<string name="SET_PW_TITLE_DIALOG">Your password</string>
+	<string name="SET_PROVIDER">Provider</string>
+	<string name="SET_PROVIDER_TITLE">Select a provider</string>
+	<string name="ERR_NO_ARGUMENTS">There are no arguments specified</string>
+	<string name="ERR_PROV_NO_RESP">Provider did not respond correctly</string>
+	<string name="ERR_CONN_ERR">Could not connect to the provider</string>
+	<string name="ERR_READ_RESP">Could not read response</string>
+</resources>

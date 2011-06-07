@@ -2,16 +2,11 @@ package nl.coralic.beta.sms.betamax;
 
 import static org.junit.Assert.*;
 
-import java.io.FileInputStream;
 import java.util.HashMap;
-import java.util.Properties;
 
-import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import nl.coralic.beta.sms.utils.http.HttpHandler;
 import nl.coralic.beta.sms.utils.objects.Response;
 
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 

@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import nl.coralic.beta.sms.R;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -29,18 +31,20 @@ public class BetamaxResponse extends Response
 		String tmpCause = root.getElementsByTagName("description").item(0).getFirstChild().getNodeValue();
 		if (tmpCause.equalsIgnoreCase(""))
 		{
-		    errorMessage = "Could not read response";
+		    errorCode = R.string.ERR_READ_RESP;
 		}
 		else
 		{
+		    // For now we use the Betamax errors to show to the user so we need custom error code, all other errors are coming from text.xml
 		    errorMessage = tmpCause;
+		    errorCode = 9999;
 		}
 	    }
 	}
 	catch (Exception e)
 	{
 	    responseOke = false;
-	    errorMessage = "Could not read response";
+	    errorCode = R.string.ERR_READ_RESP;
 	}
     }
 

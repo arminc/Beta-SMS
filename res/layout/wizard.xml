@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/gray" android:orientation="vertical">
+	<TextView android:text="@string/lblWelcome" android:id="@+id/lblWelcome"
+		android:layout_height="wrap_content" android:textColor="@drawable/black"
+		android:paddingLeft="5dp" android:textSize="20sp"
+		android:layout_width="wrap_content" />
+	<View android:layout_height="1dp" android:layout_width="fill_parent"
+		android:background="@drawable/white" />
+	<TextView android:text="@string/lblSelectProvider" android:id="@+id/lblSelectProvider"
+		android:layout_height="wrap_content" android:textColor="@drawable/black"
+		android:paddingLeft="10dp" android:paddingTop="10dp" android:textSize="16sp"
+		android:layout_width="250dp" />
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingLeft="10dp">
+		<Spinner android:id="@+id/spnProvider" android:layout_height="wrap_content"
+			android:paddingLeft="10dp" android:paddingTop="5dp"
+			android:layout_width="200dp"/>
+	</LinearLayout>
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingLeft="10dp">
+		<TextView android:text="@string/lblUsername" android:id="@+id/lblUsername"
+			android:layout_width="80dp" android:layout_height="wrap_content"
+			android:textColor="@drawable/black" android:paddingTop="5dp" />
+		<EditText android:id="@+id/txtUsername" android:layout_width="150dp"
+			android:layout_height="wrap_content" android:inputType="text"
+			android:cursorVisible="true" android:paddingTop="5dp"/>
+	</LinearLayout>
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingLeft="10dp">
+		<TextView android:text="@string/lblPassword" android:id="@+id/lblPassword"
+			android:layout_width="80dp" android:layout_height="wrap_content"
+			android:textColor="@drawable/black" android:paddingTop="5dp" />
+		<EditText android:id="@+id/txtPassword" android:layout_width="150dp" android:cursorVisible="true"
+			android:paddingLeft="5dp" android:layout_height="wrap_content" android:inputType="textPassword"/>
+	</LinearLayout>
+	<View android:layout_height="1dp" android:layout_width="fill_parent"
+		android:layout_weight="1" />
+	<View android:layout_height="1dp" android:layout_width="fill_parent"
+		android:background="#FFFFFF" android:layout_gravity="bottom" />
+	<Button android:id="@+id/btnWizardNext" android:text="@string/btnWizardNext"
+		android:paddingTop="5dp" android:layout_width="80dp"
+		android:layout_height="wrap_content" android:layout_gravity="right" />
+</LinearLayout>

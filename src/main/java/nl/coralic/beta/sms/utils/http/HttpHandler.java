@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import nl.coralic.beta.sms.R;
 import nl.coralic.beta.sms.utils.objects.Response;
 
 import org.apache.http.HttpResponse;
@@ -34,7 +35,7 @@ public class HttpHandler
 	}
 	else
 	{
-	    return new Response("No arguments");
+	    return new Response(R.string.ERR_NO_ARGUMENTS);
 	}
 	return doPost(url, postdata);
     }
@@ -64,12 +65,12 @@ public class HttpHandler
 	    }
 	    else
 	    {
-		return new Response("Provider did not respond correctly");
+		return new Response(R.string.ERR_PROV_NO_RESP);
 	    }
 	}
 	catch (Exception e)
 	{
-	    return new Response("Could not connect to the provider");
+	    return new Response(R.string.ERR_CONN_ERR);
 	}
 	finally
 	{

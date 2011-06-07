@@ -21,13 +21,7 @@
 	<string name="ALERT_CHOOSE_NUM_TITLE">Pick a number?</string>
 	<string name="ALERT_SEND_MSG">Sending.</string>
 
-	<string name="SET_PW">Username and Password</string>
 
-	<string name="SET_USER_TITLE">Username</string>
-	<string name="SET_USER_TITLE_DIALOG">Your username please...</string>
-
-	<string name="SET_PW_TITLE">Password</string>
-	<string name="SET_PW_TITLE_DIALOG">Your password please...</string>
 
 	<string name="SET_PHONE">Phone number</string>
 
@@ -39,8 +33,7 @@
 
 	<string name="SET_SERVICE_TITLE">Service URL</string>
 	<string name="SET_SERVICE_TITLE_DIALOG">Your service URL please...</string>
-	<string name="SET_SERVICE_TITLE_HINT">Default: www.webcalldirect.com (Don\'t use http://)
-	</string>
+
 
 	<string name="SET_SAVE_SMS">SMS preferences</string>
 

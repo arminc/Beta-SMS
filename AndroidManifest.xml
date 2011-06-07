@@ -16,7 +16,8 @@
 				<data android:scheme="smsto" />
 			</intent-filter>
 		</activity>
-		<activity android:name="utils.Properties" />
+		<activity android:name="Properties" />
+		<activity android:name="Wizard"/>
 		<receiver android:name="widget.BetaSmsWidget" android:label="@string/widget_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

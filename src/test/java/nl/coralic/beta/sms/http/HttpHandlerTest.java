@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import nl.coralic.beta.sms.R;
 import nl.coralic.beta.sms.utils.http.HttpHandler;
 import nl.coralic.beta.sms.utils.objects.Response;
 
@@ -26,7 +27,7 @@ public class HttpHandlerTest
     {
 	Response response  = HttpHandler.execute("", null);
 	assertFalse(response.isResponseOke());
-	assertEquals("No arguments", response.getErrorMessage());
+	assertEquals(R.string.ERR_NO_ARGUMENTS, response.getErrorCode());
     }
     
     @Test
@@ -42,7 +43,7 @@ public class HttpHandlerTest
     {
 	Response response  = HttpHandler.execute("http://wrong", arguments);
 	assertFalse(response.isResponseOke());
-	assertEquals("Could not connect to the provider", response.getErrorMessage());
+	assertEquals(R.string.ERR_CONN_ERR, response.getErrorCode());
     }
     
     @Test
@@ -50,6 +51,6 @@ public class HttpHandlerTest
     {
 	Response response  = HttpHandler.execute("https://www.webcalldirect.com/myaccount/getbalancefake.php", arguments);
 	assertFalse(response.isResponseOke());
-	assertEquals("Provider did not respond correctly", response.getErrorMessage());
+	assertEquals(R.string.ERR_PROV_NO_RESP, response.getErrorCode());
     }    
 }

@@ -23,7 +23,6 @@ import java.util.Iterator;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import nl.coralic.beta.sms.utils.AndroidSMS;
 import nl.coralic.beta.sms.utils.BetaSMSService;
-import nl.coralic.beta.sms.utils.Properties;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
@@ -33,6 +32,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,7 +58,10 @@ import android.widget.Toast;
  */
 public class Beta_SMS extends Activity
 {
-
+    //TODO: remove public
+    public SharedPreferences properties;
+    private static Context context;
+    
 	Intent intent;
 
 	public AutoCompleteTextView to;
@@ -73,14 +76,26 @@ public class Beta_SMS extends Activity
 
 	AlertDialog chooseNumberAlert;
 	ProgressDialog showStatusAlert;
-	public SharedPreferences properties;
+	
 	String intentToValue;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		intentToValue = null;
+	    context = getApplicationContext();	    
+	    
+	    //TODO: check for incoming intent
+	    super.onCreate(savedInstanceState);
+	    properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
+	    //Check if the account is valid, if not open the wizard (should happen only the first time you open the app
+		if (!Utils.checkForValidAccount(properties))
+		{
+			startActivity(new Intent(this, Wizard.class));
+		}
+		Toast.makeText(Beta_SMS.this, "Username " + properties.getString("username", "-----"), Toast.LENGTH_LONG).show();
+		
+	    	/*intentToValue = null;
 		checkForIntent(getIntent());
 		
 		// Set the view
@@ -143,6 +158,12 @@ public class Beta_SMS extends Activity
 			}
 		});
 		txtSmsText.requestFocus();
+		*/
+	}
+	
+	public static Context getAppContext()
+	{
+	    return context;
 	}
 
 	/**
