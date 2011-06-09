@@ -28,6 +28,7 @@ import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
 import nl.coralic.beta.sms.utils.contact.PhonesHandler;
 import nl.coralic.beta.sms.utils.objects.Const;
+import nl.coralic.beta.sms.utils.objects.Key;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -93,7 +94,7 @@ public class Beta_SMS extends Activity
 		{
 			startActivity(new Intent(this, Wizard.class));
 		}
-		Toast.makeText(Beta_SMS.this, "Username " + properties.getString("username", "-----"), Toast.LENGTH_LONG).show();
+		Toast.makeText(Beta_SMS.this, "Username " + properties.getString(Key.USERNAME.toString(), "-----"), Toast.LENGTH_LONG).show();
 		
 	    	/*intentToValue = null;
 		checkForIntent(getIntent());

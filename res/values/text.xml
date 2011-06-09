@@ -49,4 +49,9 @@
 	<string name="ERR_PROV_NO_RESP">Provider did not respond correctly</string>
 	<string name="ERR_CONN_ERR">Could not connect to the provider</string>
 	<string name="ERR_READ_RESP">Could not read response</string>
+	<string name="TOAST_USERNAME_EMPTY">Username can not be empty</string>
+	<string name="TOAST_PASSWORD_EMPTY">Password can not be empty</string>
+	<string name="ALERT_VERIFYING">Verifying account, please wait...</string>
+	<string name="ALERT_VERIFY_FAILED_USERPASS">Could not verify the account, please check your username and password</string>
+	<string name="ALERT_VERIFY_FAILED">Could not verify the account.</string>
 </resources>

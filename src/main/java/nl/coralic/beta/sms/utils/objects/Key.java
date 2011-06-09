@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Armin Čoralić
+ * Copyright 2011 Armin Čoralić
  * 
  * 	http://blog.coralic.nl
  * 
@@ -15,25 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
-package nl.coralic.beta.sms;
-
-import nl.coralic.beta.sms.R;
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+package nl.coralic.beta.sms.utils.objects;
 
 /**
  * @author "Armin Čoralić"
- *
+ * 
  */
-public class Properties extends PreferenceActivity {
-
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.properties);
-	}
+public enum Key
+{
+    VERIFIED, USERNAME, PASSWORD, PROVIDER;
 }

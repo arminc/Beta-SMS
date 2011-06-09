@@ -24,7 +24,8 @@ public class BetamaxHandler
 	if(response.isResponseOke())
 	{
 	    //Betamax only returns balance here so we can pass it directly
-	    return response.getResponse();
+	    //Remove the unwanted white spaces
+	    return response.getResponse().trim();
 	}
 	return "*";
     }

@@ -32,6 +32,7 @@ public class Response
     
     public String getErrorMessage()
     {
+	//error 9999 means the error message is coming from Betamax provider, show that one instead of our own
         if(errorCode == 9999)
         {
             return errorMessage;

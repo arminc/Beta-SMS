@@ -21,6 +21,7 @@
 package nl.coralic.beta.sms;
 
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.objects.Key;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -49,7 +50,6 @@ public class Wizard extends Activity
     ProgressDialog dialog;
     ArrayAdapter<CharSequence> adapter;
 
-    // TODO: text in text.xml
     // TODO: integration Test case
     // TODO: test what happens when you press back while waiting to verify
     @Override
@@ -79,12 +79,12 @@ public class Wizard extends Activity
     {
 	if (txtUsername.getText().toString().equals(""))
 	{
-	    Toast.makeText(Wizard.this, "Username can not be empty", Toast.LENGTH_SHORT).show();
+	    Toast.makeText(Wizard.this, getString(R.string.TOAST_USERNAME_EMPTY), Toast.LENGTH_SHORT).show();
 	    return;
 	}
 	if (txtPassword.getText().toString().equals(""))
 	{
-	    Toast.makeText(Wizard.this, "Password can not be empty", Toast.LENGTH_SHORT).show();
+	    Toast.makeText(Wizard.this, getString(R.string.TOAST_PASSWORD_EMPTY), Toast.LENGTH_SHORT).show();
 	    return;
 	}
 	dialog = new ProgressDialog(Wizard.this);
@@ -94,7 +94,7 @@ public class Wizard extends Activity
 	    @Override
 	    protected void onPreExecute()
 	    {
-		dialog.setMessage("Verifying account, please wait...");
+		dialog.setMessage(Wizard.this.getString(R.string.ALERT_VERIFYING));
 		dialog.show();
 	    }
 
@@ -112,24 +112,23 @@ public class Wizard extends Activity
 		// If we get an error as response then it means the username/password is wrong, otherwise it can be oke
 		if ("error".equals(response.getErrorMessage()))
 		{
-		    Toast.makeText(Wizard.this, "Could not verify the account, please check your username and password", Toast.LENGTH_LONG).show();
+		    Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED_USERPASS), Toast.LENGTH_LONG).show();
 		}
 		else
 		{
 		    // If one of these then an http error occurred.
 		    if (R.string.ERR_CONN_ERR == response.getErrorCode() || R.string.ERR_NO_ARGUMENTS == response.getErrorCode() || R.string.ERR_PROV_NO_RESP == response.getErrorCode())
 		    {
-			Toast.makeText(Wizard.this, "Could not verify the account. " + response.getErrorMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED) + " " + response.getErrorMessage(), Toast.LENGTH_LONG).show();
 		    }
 		    else
 		    {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Wizard.this);
 			SharedPreferences.Editor editor = prefs.edit();
-			//TODO: the name of the keys as an enum?
-			editor.putBoolean("verified", true);
-			editor.putString("username", txtUsername.getText().toString());
-			editor.putString("verified", txtPassword.getText().toString());
-			editor.putFloat("provider", spnProvider.getSelectedItemId());
+			editor.putBoolean(Key.VERIFIED.toString(), true);
+			editor.putString(Key.USERNAME.toString(), txtUsername.getText().toString());
+			editor.putString(Key.PASSWORD.toString(), txtPassword.getText().toString());
+			editor.putFloat(Key.PROVIDER.toString(), spnProvider.getSelectedItemId());
 			editor.commit();
 			//TODO: can I resume the previous activity?
 			startActivity(new Intent(Wizard.this, Beta_SMS.class));

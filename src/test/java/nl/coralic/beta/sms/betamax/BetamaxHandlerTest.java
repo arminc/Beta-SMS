@@ -32,7 +32,7 @@ public class BetamaxHandlerTest
 	   fail("Please provide a file testprovider.properties in the root of the Beta-SMS project. The file should contain an Betamax provider test account: \n" +
 	   		"username=test \n" +
 	   		"password=test \n" +
-	   		"provider=www.test.com");
+	   		"provider=test.com");
 	}
 	username = prop.getProperty("username");
 	password = prop.getProperty("password");
