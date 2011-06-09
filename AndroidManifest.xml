@@ -17,7 +17,8 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="Properties" />
-		<activity android:name="Wizard"/>
+		<!--  configChanges means don't destroy the activity on orientation changes-->
+		<activity android:name="Wizard" android:configChanges="orientation|keyboardHidden"/>
 		<receiver android:name="widget.BetaSmsWidget" android:label="@string/widget_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

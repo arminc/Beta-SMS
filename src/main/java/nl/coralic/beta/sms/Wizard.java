@@ -25,6 +25,7 @@ import nl.coralic.beta.sms.utils.objects.Key;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -49,9 +50,9 @@ public class Wizard extends Activity
     Spinner spnProvider;
     ProgressDialog dialog;
     ArrayAdapter<CharSequence> adapter;
+    private AsyncTask<Void, Void, Response> task;
 
     // TODO: integration Test case
-    // TODO: test what happens when you press back while waiting to verify
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -87,15 +88,22 @@ public class Wizard extends Activity
 	    Toast.makeText(Wizard.this, getString(R.string.TOAST_PASSWORD_EMPTY), Toast.LENGTH_SHORT).show();
 	    return;
 	}
-	dialog = new ProgressDialog(Wizard.this);
 
-	AsyncTask<Void, Void, Response> task = new AsyncTask<Void, Void, Response>()
+	task = new AsyncTask<Void, Void, Response>()
 	{
 	    @Override
 	    protected void onPreExecute()
 	    {
-		dialog.setMessage(Wizard.this.getString(R.string.ALERT_VERIFYING));
-		dialog.show();
+		dialog = ProgressDialog.show(Wizard.this, "Verifying", Wizard.this.getString(R.string.ALERT_VERIFYING), true, true, new DialogInterface.OnCancelListener()
+		{
+
+		    public void onCancel(DialogInterface dialog)
+		    {
+			// If the users presses back button cancel the task
+			task.cancel(true);
+		    }
+		});
+
 	    }
 
 	    @Override
@@ -130,7 +138,7 @@ public class Wizard extends Activity
 			editor.putString(Key.PASSWORD.toString(), txtPassword.getText().toString());
 			editor.putFloat(Key.PROVIDER.toString(), spnProvider.getSelectedItemId());
 			editor.commit();
-			//TODO: can I resume the previous activity?
+			// TODO: can I resume the previous activity? Maybe it's possible to use Application in AndroidManifest.xml instead of directly the Beta-SMS activity? Now we create to much activities 
 			startActivity(new Intent(Wizard.this, Beta_SMS.class));
 		    }
 		}
