@@ -26,7 +26,6 @@ import nl.coralic.beta.sms.utils.objects.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -96,14 +95,12 @@ public class Wizard extends Activity
 	    {
 		dialog = ProgressDialog.show(Wizard.this, "Verifying", Wizard.this.getString(R.string.ALERT_VERIFYING), true, true, new DialogInterface.OnCancelListener()
 		{
-
 		    public void onCancel(DialogInterface dialog)
 		    {
 			// If the users presses back button cancel the task
 			task.cancel(true);
 		    }
 		});
-
 	    }
 
 	    @Override
@@ -117,14 +114,14 @@ public class Wizard extends Activity
 	    protected void onPostExecute(Response response)
 	    {
 		dialog.dismiss();
-		// If we get an error as response then it means the username/password is wrong, otherwise it can be oke
+		// If we get an error as response then it means the username/password is wrong, otherwise it should be oke
 		if ("error".equals(response.getErrorMessage()))
 		{
 		    Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED_USERPASS), Toast.LENGTH_LONG).show();
 		}
 		else
 		{
-		    // If one of these then an http error occurred.
+		    // If one of these then an http error occurred, in other cases it is oke
 		    if (R.string.ERR_CONN_ERR == response.getErrorCode() || R.string.ERR_NO_ARGUMENTS == response.getErrorCode() || R.string.ERR_PROV_NO_RESP == response.getErrorCode())
 		    {
 			Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED) + " " + response.getErrorMessage(), Toast.LENGTH_LONG).show();
@@ -138,8 +135,8 @@ public class Wizard extends Activity
 			editor.putString(Key.PASSWORD.toString(), txtPassword.getText().toString());
 			editor.putFloat(Key.PROVIDER.toString(), spnProvider.getSelectedItemId());
 			editor.commit();
-			// TODO: can I resume the previous activity? Maybe it's possible to use Application in AndroidManifest.xml instead of directly the Beta-SMS activity? Now we create to much activities 
-			startActivity(new Intent(Wizard.this, Beta_SMS.class));
+			// We can just close this activity so it is not on the activity stack anymore
+			finish();
 		    }
 		}
 	    }

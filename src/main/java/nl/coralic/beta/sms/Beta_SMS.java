@@ -86,15 +86,15 @@ public class Beta_SMS extends Activity
 	{
 	    context = getApplicationContext();	    
 	    
-	    //TODO: check for incoming intent
+	    //TODO: check for incoming intent (is it sms or what?)
 	    super.onCreate(savedInstanceState);
 	    properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
 	    //Check if the account is valid, if not open the wizard (should happen only the first time you open the app
-		if (!Utils.checkForValidAccount(properties))
-		{
-			startActivity(new Intent(this, Wizard.class));
-		}
-		Toast.makeText(Beta_SMS.this, "Username " + properties.getString(Key.USERNAME.toString(), "-----"), Toast.LENGTH_LONG).show();
+	    if (!Utils.checkForValidAccount(properties))
+	    {
+		startActivity(new Intent(this, Wizard.class));
+	    }
+	    Toast.makeText(Beta_SMS.this, "Username " + properties.getString(Key.USERNAME.toString(), "-----"), Toast.LENGTH_LONG).show();
 		
 	    	/*intentToValue = null;
 		checkForIntent(getIntent());

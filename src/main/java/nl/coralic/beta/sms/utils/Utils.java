@@ -20,6 +20,7 @@ package nl.coralic.beta.sms.utils;
 import java.util.ArrayList;
 
 import nl.coralic.beta.sms.Beta_SMS;
+import nl.coralic.beta.sms.utils.objects.Key;
 
 import android.content.SharedPreferences;
 
@@ -36,7 +37,7 @@ public class Utils
      */
     public static boolean checkForValidAccount(SharedPreferences properties)
     {
-	if (properties.contains("verified") && !properties.getString("verified", "").equalsIgnoreCase(""))
+	if (properties.contains(Key.VERIFIED.toString()) && properties.getBoolean(Key.VERIFIED.toString(), false) == true)
 	{
 	    return true;
 	}
