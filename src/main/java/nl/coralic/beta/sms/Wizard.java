@@ -115,7 +115,7 @@ public class Wizard extends Activity
 	    {
 		dialog.dismiss();
 		// If we get an error as response then it means the username/password is wrong, otherwise it should be oke
-		if ("error".equals(response.getErrorMessage()))
+		if ("error".equalsIgnoreCase(response.getErrorMessage()))
 		{
 		    Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED_USERPASS), Toast.LENGTH_LONG).show();
 		}
