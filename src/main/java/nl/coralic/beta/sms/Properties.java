@@ -21,7 +21,10 @@
 package nl.coralic.beta.sms;
 
 import nl.coralic.beta.sms.R;
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 
 /**
@@ -35,5 +38,15 @@ public class Properties extends PreferenceActivity {
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.properties);
+		Preference myPref = (Preference) findPreference("myKey");
+		OnPreferenceClickListener onPreferenceClickListener = new OnPreferenceClickListener()
+		{
+		    public boolean onPreferenceClick(Preference preference)
+		    {
+			startActivity(new Intent(Properties.this, Wizard.class));
+			return false;
+		    }
+		};
+		myPref.setOnPreferenceClickListener(onPreferenceClickListener);
 	}
 }

@@ -55,8 +55,6 @@ public class Utils
 	return data.replace("sms:", "").replace("smstop:", "").replace(" ", "").replace("(0)", "").replace("-", "").replace(".", "").replace("(", "").replace(")", "");
     }
 
-
-
     public static ArrayList<String> splitSmsTextTo160Chars(String sms)
     {
 	ArrayList<String> smsSplit = new ArrayList<String>();
@@ -81,7 +79,5 @@ public class Utils
 	    }
 	}
 	return smsSplit;
-    }
-    
-    
+    }    
 }

@@ -21,7 +21,6 @@ import java.net.URLDecoder;
 import java.util.Iterator;
 
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
-import nl.coralic.beta.sms.utils.AndroidSMS;
 import nl.coralic.beta.sms.utils.BetaSMSService;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
@@ -44,7 +43,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -59,329 +57,319 @@ import android.widget.Toast;
  */
 public class Beta_SMS extends Activity
 {
-    //TODO: remove public
-    public SharedPreferences properties;
+    SharedPreferences properties;
     private static Context context;
-    
-	Intent intent;
 
-	public AutoCompleteTextView to;
-	public EditText txtSmsText;
-	TextView txtBalance;
-	Button send;
-	CheckBox chkSendNormal;
-	public TextView txtTextCount;
+    Intent intent;
 
-	PhonesHandler phoneHandler;
-	PhoneNumbers phoneNumber;
+    AutoCompleteTextView to;
+    EditText txtSmsText;
+    Button send;
+    CheckBox chkSendNormal;
+    Button contact;
+    TextView txtTextCount;
+    String[] providers;
 
-	AlertDialog chooseNumberAlert;
-	ProgressDialog showStatusAlert;
-	
-	String intentToValue;
+    PhonesHandler phoneHandler;
+    PhoneNumbers phoneNumber;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState)
+    AlertDialog chooseNumberAlert;
+    ProgressDialog showStatusAlert;
+
+    String intentValue;
+
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+	context = getApplicationContext();
+
+	// TODO: check for incoming intent?
+	intentValue = null;
+	checkForIntent(getIntent());
+	super.onCreate(savedInstanceState);
+	properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
+	// Check if the account is valid, if not open the wizard (should happen only the first time you open the app
+	if (!Utils.checkForValidAccount(properties))
 	{
-	    context = getApplicationContext();	    
-	    
-	    //TODO: check for incoming intent (is it sms or what?)
-	    super.onCreate(savedInstanceState);
-	    properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
-	    //Check if the account is valid, if not open the wizard (should happen only the first time you open the app
-	    if (!Utils.checkForValidAccount(properties))
+	    startActivity(new Intent(this, Wizard.class));
+	}
+
+	// Set the view
+	Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
+	super.onCreate(savedInstanceState);
+
+	setContentView(R.layout.betasms);
+
+	providers = getResources().getStringArray(R.array.providers);
+
+	to = (AutoCompleteTextView) findViewById(R.id.txtTo);
+	txtTextCount = (TextView) findViewById(R.id.txtTextCount);
+	txtSmsText = (EditText) findViewById(R.id.txtSmsText);
+	send = (Button) findViewById(R.id.btnSend);
+	chkSendNormal = (CheckBox) findViewById(R.id.chkSendNormal);
+	contact = (Button) findViewById(R.id.btnContact);
+
+	// get the balance
+	showBalance();
+
+	txtSmsText.addTextChangedListener(new SmsTextCounter(txtTextCount));
+
+	if (intentValue != null)
+	{
+	    to.setText(intentValue);
+	}
+
+	// auto complete contacts, show all phones
+	phoneHandler = new PhonesHandler();
+	to.setAdapter(phoneHandler.getContactsPhonesListAdapter(getContentResolver(), this));
+
+	// Set the intent for selecting the contact
+	intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+
+	// When taped it will fire up an intent for showing Contacts,
+	// when a contact is selected it will return and fire up
+	// onActivityResult function
+	contact.setOnClickListener(new View.OnClickListener()
+	{
+	    public void onClick(View v)
 	    {
-		startActivity(new Intent(this, Wizard.class));
+		Log.d(Const.TAG_MAIN, "Double taped, show contacts");
+		startActivityForResult(intent, Const.PICK_CONTACT);
 	    }
-	    Toast.makeText(Beta_SMS.this, "Username " + properties.getString(Key.USERNAME.toString(), "-----"), Toast.LENGTH_LONG).show();
-		
-	    	/*intentToValue = null;
-		checkForIntent(getIntent());
-		
-		// Set the view
-		Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.betasmsmain);
+	});
 
-		to = (AutoCompleteTextView) findViewById(R.id.txtTo);
-		txtTextCount = (TextView) findViewById(R.id.txtTextCount);
-		txtSmsText = (EditText) findViewById(R.id.txtSmsText);
-		send = (Button) findViewById(R.id.btnSend);
-		chkSendNormal = (CheckBox) findViewById(R.id.chkSendNormal);
+	// when send clicked
+	send.setOnClickListener(new View.OnClickListener()
+	{
+	    public void onClick(View v)
+	    {
+		onSend();
+	    }
+	});
 
-		txtSmsText.addTextChangedListener(new SmsTextCounter(txtTextCount));
+	// set focus on the sms text field
+	txtSmsText.requestFocus();
+    }
 
-		txtBalance = (TextView) findViewById(R.id.txtBalance);
+    @Override
+    protected void onRestart()
+    {
+	super.onRestart();
+	// If the users presses back on the Wizard it means no username/pass is filled and he wants to quit, there is no reason showing Beta-SMS app if you can't use it.
+	properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
+	if (!Utils.checkForValidAccount(properties))
+	{
+	    finish();
+	}
+    }
 
-		Log.d(Const.TAG_MAIN, "Read properties.");
-		// you need to read the properties before showing balance
-		properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
-		
-		if (!Utils.checkForProperties(Beta_SMS.this, properties))
+    public static Context getAppContext()
+    {
+	return context;
+    }
+
+    /**
+     * It will be fired up after a user selects an contact
+     */
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data)
+    {
+	Log.d(Const.TAG_MAIN, "User selected an contact.");
+	if (reqCode == Const.PICK_CONTACT && resultCode == RESULT_OK)
+	{
+	    AsyncTask<Uri, Void, PhoneNumbers> task = new AsyncTask<Uri, Void, PhoneNumbers>()
+	    {
+		@Override
+		protected PhoneNumbers doInBackground(Uri... uris)
 		{
-			startActivity(new Intent(this, Properties.class));
+		    phoneHandler = new PhonesHandler();
+		    Log.d(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
+		    return phoneHandler.getPhoneNumbersForSelectedContact(getContentResolver(), uris[0]);
 		}
 
-		if(intentToValue != null)
+		@Override
+		protected void onPostExecute(PhoneNumbers result)
 		{
-			to.setText(intentToValue);
+		    Log.d(Const.TAG_MAIN, "Present the numbers.");
+		    chooseNumber(result);
 		}
-		// get the balance
-		showBalance();
-		
-		// auto complete contacts, show all phones
-		phoneHandler = new PhonesHandler();
-		to.setAdapter(phoneHandler.getContactsPhonesListAdapter(getContentResolver(), this));
-
-		// Set the intent for selecting the contact
-		intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI); 
-
-		// When double taped it will fire up an intent for showing Contacts,
-		// when a contact is selected it will return and fire up
-		// onActivityResult function
-		to.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				Log.d(Const.TAG_MAIN, "Double taped, show contacts");
-				startActivityForResult(intent, Const.PICK_CONTACT);
-			}
-		});
-
-		//when send clicked
-		send.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
-				if (Utils.checkForProperties(Beta_SMS.this, properties))
-				{
-					onSend();
-				}
-			}
-		});
-		txtSmsText.requestFocus();
-		*/
+	    };
+	    task.execute(data.getData());
 	}
-	
-	public static Context getAppContext()
-	{
-	    return context;
-	}
+    }
 
-	/**
-	 * It will be fired up after a user selects an contact, it will show the us
-	 */
-	@Override
-	public void onActivityResult(int reqCode, int resultCode, Intent data)
+    /**
+     * let's you choose witch number you want from the selected contact. If the contact has only one number it auto selects that
+     */
+    private void chooseNumber(PhoneNumbers contact)
+    {
+	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	this.phoneNumber = contact;
+	if (phoneNumber.getPhoneNumbersLabelArray().length == 1)
 	{
-		Log.d(Const.TAG_MAIN, "User selected an contact.");
-		if (reqCode == Const.PICK_CONTACT && resultCode == RESULT_OK)
+	    Log.d(Const.TAG_MAIN, "Contact only has one number.");
+	    to.setText(phoneNumber.getCleanPhoneNumber(0));
+	}
+	else
+	{
+	    Log.d(Const.TAG_MAIN, "Contact has multiple numbers showing all of them.");
+	    builder.setTitle(phoneNumber.getContactsName());
+	    builder.setItems(phoneNumber.getPhoneNumbersLabelArray(), new DialogInterface.OnClickListener()
+	    {
+		public void onClick(DialogInterface dialog, int item)
 		{
-			AsyncTask<Uri, Void, PhoneNumbers> task = new AsyncTask<Uri, Void, PhoneNumbers>() {
-				@Override
-				protected PhoneNumbers doInBackground(Uri... uris)
-				{
-					phoneHandler = new PhonesHandler();
-					Log.d(Const.TAG_MAIN, "Get the phonenumbers from the selected contact.");
-					return phoneHandler.getPhoneNumbersForSelectedContact(getContentResolver(), uris[0]);
-				}
-
-				@Override
-				protected void onPostExecute(PhoneNumbers result)
-				{
-					Log.d(Const.TAG_MAIN, "Present the numbers.");
-					chooseNumber(result);
-				}
-			};
-			task.execute(data.getData());
+		    Log.d(Const.TAG_MAIN, "User selected an number of a contact.");
+		    to.setText(phoneNumber.getCleanPhoneNumber(item));
+		    phoneNumber = null;
+		    chooseNumberAlert.dismiss();
 		}
+	    });
+	    chooseNumberAlert = builder.create();
+	    chooseNumberAlert.show();
 	}
+    }
 
-	/**
-	 * let's you choose witch number you want from the selected contact. If the contact has only one number it auto selects that
-	 */
-	private void chooseNumber(PhoneNumbers contact)
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		this.phoneNumber = contact;
-		if (phoneNumber.getPhoneNumbersLabelArray().length == 1)
-		{
-			Log.d(Const.TAG_MAIN, "Contact only has one number.");
-			to.setText(phoneNumber.getCleanPhoneNumber(0));
-		}
-		else
-		{
-			Log.d(Const.TAG_MAIN, "Contact has multiple numbers showing all of them.");
-			builder.setTitle(phoneNumber.getContactsName());
-			builder.setItems(phoneNumber.getPhoneNumbersLabelArray(), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item)
-				{
-					Log.d(Const.TAG_MAIN, "User selected an number of a contact.");
-					to.setText(phoneNumber.getCleanPhoneNumber(item));
-					phoneNumber = null;
-					chooseNumberAlert.dismiss();
-				}
-			});
-			chooseNumberAlert = builder.create();
-			chooseNumberAlert.show();
-		}
-	}
+    /**
+     * Checks if the data of the intent can be used
+     * 
+     * @param recintent
+     *            Intent that is received
+     */
+    @SuppressWarnings("deprecation")
+    private void checkDataIncomingIntent(Intent recintent)
+    {
+	Log.d(Const.TAG_MAIN, "The intent data.");
+	String param = Utils.stripString(recintent.getDataString());
+	intentValue = URLDecoder.decode(param);
+    }
 
-	/**
-	 * Checks if the data of the intent can be used
-	 * 
-	 * @param recintent
-	 *            Intent that is received
-	 */
-	private void checkDataIncomingIntent(Intent recintent)
-	{
-		Log.d(Const.TAG_MAIN, "The intent data.");
-		String param = Utils.stripString(recintent.getDataString());
-		intentToValue = URLDecoder.decode(param);
-	}
+    /**
+     * Creates the menu from betasmsmenu.xml
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+	getMenuInflater().inflate(R.menu.betasmsmenu, menu);
+	return true;
+    }
 
-	/**
-	 * Creates the menu from betasmsmenu.xml
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
+    /**
+     * Does different things depending on the menu item that is selected
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+	switch (item.getItemId())
 	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.betasmsmenu, menu);
+	    case R.id.info:
+		Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.info);
+		dialog.setTitle(R.string.INFO_TITLE);
+		dialog.show();
+		return true;
+	    case R.id.settings:
+		startActivity(new Intent(this, Properties.class));
 		return true;
 	}
+	return false;
+    }
 
-	/**
-	 * Does different things depending on the menu item that is selected
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
+    /**
+     * Sends the SMS
+     */
+    private void onSend()
+    {
+	if (!checkIfFieldAreEmpty())
 	{
-		switch (item.getItemId())
-		{
-			case R.id.info:
-				Dialog dialog = new Dialog(this);
-				dialog.setContentView(R.layout.info);
-				dialog.setTitle(R.string.INFO_TITLE);
-				dialog.show();
-				return true;
-			case R.id.settings:
-				startActivity(new Intent(this, Properties.class));
-				return true;
-			case R.id.request:
-				String url = "http://beta-sms.coralic.nl";
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setData(Uri.parse(url));
-				startActivity(i);
-				return true;
-			case R.id.quit:
-				this.finish();
-				return true;
-		}
-		return false;
+	    return;
 	}
-
-	/**
-	 * Sends the SMS
-	 */
-	private void onSend()
+	Intent in = new Intent(this, BetaSMSService.class);
+	in.putExtra("number", to.getText().toString());
+	in.putExtra("sms", txtSmsText.getText().toString());
+	startService(in);
+	Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
+	if (properties.getBoolean("DeleteTextKey", false))
 	{
-		if (!checkIfFieldAreEmpty())
-		{
-			return;
-		}
-
-		if (chkSendNormal.isChecked())
-		{
-			Log.d(Const.TAG_MAIN, "Send normal sms not trough betamax.");
-			AndroidSMS sms = new AndroidSMS();
-			sms.sendSMS(Beta_SMS.this, to.getText().toString(), txtSmsText.getText().toString());
-		}
-		else
-		{
-			Intent in = new Intent(this, BetaSMSService.class);
-			in.putExtra("number", to.getText().toString());
-			in.putExtra("sms", txtSmsText.getText().toString());
-			startService(in);
-			Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
-			if (properties.getBoolean("DeleteTextKey", false))
-			{
-				// reset everything to empty
-				txtSmsText.setText("");
-				to.setText("");
-			}
-		}
+	    // reset everything to empty
+	    txtSmsText.setText("");
+	    to.setText("");
 	}
+    }
 
-	private boolean checkIfFieldAreEmpty()
+    private boolean checkIfFieldAreEmpty()
+    {
+	Log.d(Const.TAG_MAIN, "Checking to see if all fields are filled.");
+	if (to.getText().toString().length() < 1)
 	{
-		Log.d(Const.TAG_MAIN, "Checking to see if all fields are filled.");
-		if (to.getText().toString().length() < 1)
-		{
-			Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_TO_EMPTY), Toast.LENGTH_SHORT).show();
-			Log.d(Const.TAG_MAIN, "To empty.");
-			return false;
-		}
-		if (txtSmsText.getText().toString().length() < 1)
-		{
-			Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_SMS_EMPTY), Toast.LENGTH_SHORT).show();
-			Log.d(Const.TAG_MAIN, "SMS text empty.");
-			return false;
-		}
-		return true;
+	    Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_TO_EMPTY), Toast.LENGTH_SHORT).show();
+	    Log.d(Const.TAG_MAIN, "To empty.");
+	    return false;
 	}
-
-	private void showBalance()
+	if (txtSmsText.getText().toString().length() < 1)
 	{
-		if (properties.getBoolean("ShowBalanceKey", false))
-		{
-			Log.d(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
-			AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+	    Toast.makeText(Beta_SMS.this, getText(R.string.MAIN_SMS_EMPTY), Toast.LENGTH_SHORT).show();
+	    Log.d(Const.TAG_MAIN, "SMS text empty.");
+	    return false;
+	}
+	return true;
+    }
 
-				@Override
-				protected String doInBackground(Void... v)
-				{
-					return BetamaxHandler.getBalance(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString(
-							"PasswordKey", ""));
-				}
+    private void showBalance()
+    {
+	Log.d(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
+	AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>()
+	{
+	    @Override
+	    protected String doInBackground(Void... v)
+	    {
+		return BetamaxHandler.getBalance(providers[(int) properties.getFloat(Key.PROVIDERID.toString(), 0)], properties.getString(Key.USERNAME.toString(), ""),
+			properties.getString(Key.PASSWORD.toString(), ""));
+	    }
 
-				@Override
-				protected void onPostExecute(String anwser)
-				{
-					txtBalance.setText(anwser);
-				}
-			};
-			task.execute();
-		}
-	}
-	
-	@Override
-	protected void onDestroy()
-	{
-		stopService(new Intent(this, BetaSMSService.class));
-		super.onDestroy();
-	}
-	
-	private void checkForIntent(Intent recintent)
-	{
-		Bundle extras = recintent.getExtras();
-		if(extras != null)
+	    @Override
+	    protected void onPostExecute(String anwser)
+	    {
+		// if we receive * don't show that
+		if (!"*".equals(anwser))
 		{
-			Iterator<String> i = extras.keySet().iterator();
-			while(i.hasNext())
-			{
-				String tmp = i.next();
-				Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
-			}
-			Intent in = new Intent(this, BetaSMSService.class);
-			in.putExtra("number", extras.getString("number"));
-			in.putExtra("sms", extras.getString("sms"));
-			startService(in);
-			this.finish();
+		    txtSmsText.setHint(getText(R.string.txtSmsText_hint) + ", " + getText(R.string.balanceText) + " " + anwser);
 		}
-		else if (recintent.getData() != null)
-		{
-			Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
-			checkDataIncomingIntent(recintent);
-		}
+	    }
+	};
+	task.execute();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+	stopService(new Intent(this, BetaSMSService.class));
+	super.onDestroy();
+    }
+
+    private void checkForIntent(Intent receivedIntent)
+    {
+	Bundle extras = receivedIntent.getExtras();
+	//if it contains extras then it's our own bundle
+	if (extras != null)
+	{
+	    Iterator<String> i = extras.keySet().iterator();
+	    while (i.hasNext())
+	    {
+		String tmp = i.next();
+		Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
+	    }
+	    Intent in = new Intent(this, BetaSMSService.class);
+	    in.putExtra("number", extras.getString("number"));
+	    in.putExtra("sms", extras.getString("sms"));
+	    startService(in);
+	    this.finish();
 	}
+	//if it only contains data then it has the number to sms to
+	else if (receivedIntent.getData() != null)
+	{
+	    Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
+	    checkDataIncomingIntent(receivedIntent);
+	}
+    }
 }

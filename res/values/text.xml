@@ -54,4 +54,8 @@
 	<string name="ALERT_VERIFYING">Verifying account, please wait...</string>
 	<string name="ALERT_VERIFY_FAILED_USERPASS">Could not verify the account, please check your username and password</string>
 	<string name="ALERT_VERIFY_FAILED">Could not verify the account.</string>
+	<string name="txtTo_hint">Contact</string>
+	<string name="txtTo_hint_auto">Typing * will show all contacts</string>
+	<string name="txtSmsText_hint">Type to compose</string>
+	<string name="balanceText">Balance:</string>
 </resources>

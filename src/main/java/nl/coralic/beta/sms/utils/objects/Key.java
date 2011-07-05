@@ -23,5 +23,5 @@ package nl.coralic.beta.sms.utils.objects;
  */
 public enum Key
 {
-    VERIFIED, USERNAME, PASSWORD, PROVIDER;
+    VERIFIED, USERNAME, PASSWORD, PROVIDERID;
 }

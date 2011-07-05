@@ -36,10 +36,9 @@ public class BetamaxHandler
 	HashMap<String,String> arguments = new HashMap<String, String>(); 
 	arguments.put(USERNAME, username);
 	arguments.put(PASSWORD, password);
-	//TODO: IMPORTENT replacements done on the TO en FROM, do we need to do them here or else?
-	arguments.put(TO, to);
+	arguments.put(TO, to.replace("+", "00"));
+	arguments.put(FROM, from.replace("+", "00"));
 	arguments.put(TEXT, text);
-	arguments.put(FROM, from);
 	Response response = HttpHandler.execute(url, arguments);
 	if(response.isResponseOke())
 	{

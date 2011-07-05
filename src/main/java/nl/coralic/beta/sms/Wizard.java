@@ -133,7 +133,7 @@ public class Wizard extends Activity
 			editor.putBoolean(Key.VERIFIED.toString(), true);
 			editor.putString(Key.USERNAME.toString(), txtUsername.getText().toString());
 			editor.putString(Key.PASSWORD.toString(), txtPassword.getText().toString());
-			editor.putFloat(Key.PROVIDER.toString(), spnProvider.getSelectedItemId());
+			editor.putFloat(Key.PROVIDERID.toString(), spnProvider.getSelectedItemId());
 			editor.commit();
 			// We can just close this activity so it is not on the activity stack anymore
 			finish();

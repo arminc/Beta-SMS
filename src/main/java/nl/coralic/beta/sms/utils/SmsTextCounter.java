@@ -20,57 +20,67 @@ package nl.coralic.beta.sms.utils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
+
 /**
  * @author "Armin Čoralić"
  */
 public class SmsTextCounter implements TextWatcher
 {
-	private TextView txtTextCount;
+    private TextView txtTextCount;
+    private final int divider = 160;
 
-	/**
-	 * Counts the letters that are typed in the SMS text field
-	 * @param txtTextCount
-	 */
-	public SmsTextCounter(TextView txtTextCount)
-	{
-		this.txtTextCount = txtTextCount;
-	}
+    /**
+     * Counts the letters that are typed in the SMS text field
+     * 
+     * @param txtTextCount
+     */
+    public SmsTextCounter(TextView txtTextCount)
+    {
+	this.txtTextCount = txtTextCount;
+    }
 
-	public void afterTextChanged(Editable s)
-	{
-		//Not needed
-	}
+    public void afterTextChanged(Editable s)
+    {
+	// Not needed
+    }
 
-	public void beforeTextChanged(CharSequence s, int start, int count, int after)
-	{
-		//Not needed
-	}
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
+	// Not needed
+    }
 
-	//Calculates until 5 messages
-	public void onTextChanged(CharSequence s, int start, int before, int count)
+    // Calculates until 5 messages
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+	int smsChars = s.toString().length();
+	if (smsChars >=150)
 	{
-		int sms = 0;
-		if(s.toString().length() > 640)
-		{
-			sms = 5;
-		}
-		else if(s.toString().length() > 480)
-		{
-			sms = 4;
-		}
-		else if(s.toString().length() > 320)
-		{
-			sms = 3;
-		}
-		else if(s.toString().length() > 160)
-		{
-			sms = 2;
-		}
-		else
-		{
-			sms = 1;
-		}
-		txtTextCount.setText(sms + "/" + s.toString().length());
+	    txtTextCount.setVisibility(TextView.VISIBLE);
+	    // how many sms fit in this text
+	    int smsCounter = smsChars / divider;
+	    int fullSmsChars = smsCounter * divider;
+	    int restNumber = smsChars - fullSmsChars;
+	    if (restNumber != 0)
+	    {
+		smsCounter++;
+	    }
+	    if(smsCounter == 1 && restNumber != 0)
+	    {
+		txtTextCount.setText(String.valueOf(divider - restNumber));
+	    }
+	    else if(restNumber == 0)
+	    {
+		txtTextCount.setText(restNumber + "/" + smsCounter);
+	    }
+	    else
+	    {
+		txtTextCount.setText(divider - restNumber + "/" + smsCounter);
+	    }
 	}
+	else
+	{
+	    txtTextCount.setVisibility(TextView.INVISIBLE);
+	}
+    }
 
 }
