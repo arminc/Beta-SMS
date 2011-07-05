@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/gray">
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingLeft="5dp" android:paddingTop="5dp">
+		<Button android:id="@+id/btnContact" android:background="@drawable/ic_launcher_contacts"
+			android:paddingTop="5dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_gravity="left" />
+		<AutoCompleteTextView android:id="@+id/txtTo"
+			android:completionThreshold="1" android:completionHint="@string/txtTo_hint_auto"
+			android:hint="@string/txtTo_hint" android:paddingLeft="5dp"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</LinearLayout>
+	<View android:layout_height="20dp" android:layout_width="fill_parent" />
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<EditText android:id="@+id/txtSmsText" android:paddingLeft="5dp"
+			android:layout_width="fill_parent" android:minLines="3"
+			android:layout_height="wrap_content" android:hint="@string/txtSmsText_hint"
+			android:inputType="textCapSentences|textMultiLine"
+			android:cursorVisible="true" android:maxLines="10"
+			android:scrollbars="vertical" />
+		<TextView android:id="@+id/txtTextCount" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_gravity="right"
+			android:background="#50000000" android:textColor="#ffffffff" android:visibility="invisible"/>
+	</FrameLayout>
+	<Button android:id="@+id/btnSend" android:text="@string/BUTTON_SEND"
+		android:padding="3dip" android:layout_height="wrap_content"
+		android:layout_width="60dp" android:layout_gravity="right"/>
+</LinearLayout>
