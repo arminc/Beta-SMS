@@ -100,7 +100,6 @@ public class Beta_SMS extends Activity
 
 	// Set the view
 	Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
-	super.onCreate(savedInstanceState);
 
 	//allow custom title
 	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);

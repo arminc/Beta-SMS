@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.view.Window;
 
 /**
  * @author "Armin Čoralić"
@@ -36,7 +37,9 @@ public class Properties extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
 		addPreferencesFromResource(R.layout.properties);
 		Preference myPref = (Preference) findPreference("myKey");
 		OnPreferenceClickListener onPreferenceClickListener = new OnPreferenceClickListener()
