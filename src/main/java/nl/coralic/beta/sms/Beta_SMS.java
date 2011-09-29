@@ -45,6 +45,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -68,6 +69,8 @@ public class Beta_SMS extends Activity
     CheckBox chkSendNormal;
     Button contact;
     TextView txtTextCount;
+    TextView txtTitleSaldoValue;
+    TextView txtTitleSaldo;
     String[] providers;
 
     PhonesHandler phoneHandler;
@@ -99,15 +102,24 @@ public class Beta_SMS extends Activity
 	Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
 	super.onCreate(savedInstanceState);
 
+	//allow custom title
+	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
 	setContentView(R.layout.betasms);
 
+	//set custom title
+	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
+	txtTitleSaldoValue = (TextView) findViewById(R.id.txtTitleSaldoValue);
+	txtTitleSaldo = (TextView) findViewById(R.id.txtTitleSaldo);	
+	
+	//show providers
 	providers = getResources().getStringArray(R.array.providers);
 
+	//get the rest of the ui components
 	to = (AutoCompleteTextView) findViewById(R.id.txtTo);
 	txtTextCount = (TextView) findViewById(R.id.txtTextCount);
 	txtSmsText = (EditText) findViewById(R.id.txtSmsText);
 	send = (Button) findViewById(R.id.btnSend);
-	chkSendNormal = (CheckBox) findViewById(R.id.chkSendNormal);
 	contact = (Button) findViewById(R.id.btnContact);
 
 	// get the balance
@@ -333,7 +345,8 @@ public class Beta_SMS extends Activity
 		// if we receive * don't show that
 		if (!"*".equals(anwser))
 		{
-		    txtSmsText.setHint(getText(R.string.txtSmsText_hint) + ", " + getText(R.string.balanceText) + " " + anwser);
+		    txtTitleSaldo.setText(getString(R.string.txtTitleSaldo));
+		    txtTitleSaldoValue.setText(anwser);
 		}
 	    }
 	};

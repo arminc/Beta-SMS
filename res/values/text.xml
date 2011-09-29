@@ -58,4 +58,5 @@
 	<string name="txtTo_hint_auto">Typing * will show all contacts</string>
 	<string name="txtSmsText_hint">Type to compose</string>
 	<string name="balanceText">Balance:</string>
+	<string name="txtTitleSaldo">Saldo:</string>
 </resources>

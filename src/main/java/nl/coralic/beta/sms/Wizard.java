@@ -31,10 +31,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -56,7 +58,12 @@ public class Wizard extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
 	super.onCreate(savedInstanceState);
+	//allow custom title
+	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	setContentView(R.layout.wizard);
+	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
+	TextView txtTitleSaldoValue = (TextView) findViewById(R.id.txtTitleSaldoValue);
+	
 	spnProvider = (Spinner) findViewById(R.id.spnProvider);
 	adapter = ArrayAdapter.createFromResource(this, R.array.providers, android.R.layout.simple_spinner_item);
 	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

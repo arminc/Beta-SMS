@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="35dip"> 
+    
+    <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:text="Beta-SMS"
+			android:textColor="@drawable/white"
+			android:textStyle="bold"/>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:paddingRight="5dip">
+ 
+        <TextView
+            android:id="@+id/txtTitleSaldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10px"/>
+ 
+        <TextView
+            android:id="@+id/txtTitleSaldoValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+ 
+    </LinearLayout>
+ 
+</LinearLayout>
