@@ -62,7 +62,6 @@ public class Wizard extends Activity
 	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	setContentView(R.layout.wizard);
 	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
-	TextView txtTitleSaldoValue = (TextView) findViewById(R.id.txtTitleSaldoValue);
 	
 	spnProvider = (Spinner) findViewById(R.id.spnProvider);
 	adapter = ArrayAdapter.createFromResource(this, R.array.providers, android.R.layout.simple_spinner_item);
