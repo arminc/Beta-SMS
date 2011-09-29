@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -101,20 +102,20 @@ public class Beta_SMS extends Activity
 	// Set the view
 	Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
 
-	//allow custom title
+	// allow custom title
 	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
 	setContentView(R.layout.betasms);
 
-	//set custom title
+	// set custom title
 	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
 	txtTitleSaldoValue = (TextView) findViewById(R.id.txtTitleSaldoValue);
-	txtTitleSaldo = (TextView) findViewById(R.id.txtTitleSaldo);	
-	
-	//show providers
+	txtTitleSaldo = (TextView) findViewById(R.id.txtTitleSaldo);
+
+	// show providers
 	providers = getResources().getStringArray(R.array.providers);
 
-	//get the rest of the ui components
+	// get the rest of the ui components
 	to = (AutoCompleteTextView) findViewById(R.id.txtTo);
 	txtTextCount = (TextView) findViewById(R.id.txtTextCount);
 	txtSmsText = (EditText) findViewById(R.id.txtSmsText);
@@ -138,7 +139,7 @@ public class Beta_SMS extends Activity
 	// Set the intent for selecting the contact
 	intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
 
-	// When taped it will fire up an intent for showing Contacts,
+	// When tapped it will fire up an intent for showing Contacts,
 	// when a contact is selected it will return and fire up
 	// onActivityResult function
 	contact.setOnClickListener(new View.OnClickListener()
@@ -291,24 +292,23 @@ public class Beta_SMS extends Activity
      */
     private void onSend()
     {
-	if (!checkIfFieldAreEmpty())
+	if (fieldsNotEmpty())
 	{
-	    return;
-	}
-	Intent in = new Intent(this, BetaSMSService.class);
-	in.putExtra("number", to.getText().toString());
-	in.putExtra("sms", txtSmsText.getText().toString());
-	startService(in);
-	Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
-	if (properties.getBoolean("DeleteTextKey", false))
-	{
-	    // reset everything to empty
-	    txtSmsText.setText("");
-	    to.setText("");
+	    Intent in = new Intent(this, BetaSMSService.class);
+	    in.putExtra(BetaSMSService.TO, to.getText().toString());
+	    in.putExtra(BetaSMSService.SMS, txtSmsText.getText().toString());
+	    startService(in);
+	    Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
+	    if (properties.getBoolean("DeleteTextKey", false))
+	    {
+		// reset everything to empty
+		txtSmsText.setText("");
+		to.setText("");
+	    }
 	}
     }
 
-    private boolean checkIfFieldAreEmpty()
+    private boolean fieldsNotEmpty()
     {
 	Log.d(Const.TAG_MAIN, "Checking to see if all fields are filled.");
 	if (to.getText().toString().length() < 1)
@@ -355,14 +355,14 @@ public class Beta_SMS extends Activity
     @Override
     protected void onDestroy()
     {
-	stopService(new Intent(this, BetaSMSService.class));
+	//stopService(new Intent(this, BetaSMSService.class));
 	super.onDestroy();
     }
 
     private void checkForIntent(Intent receivedIntent)
     {
 	Bundle extras = receivedIntent.getExtras();
-	//if it contains extras then it's our own bundle
+	// if it contains extras then it's our own bundle
 	if (extras != null)
 	{
 	    Iterator<String> i = extras.keySet().iterator();
@@ -372,16 +372,26 @@ public class Beta_SMS extends Activity
 		Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
 	    }
 	    Intent in = new Intent(this, BetaSMSService.class);
-	    in.putExtra("number", extras.getString("number"));
-	    in.putExtra("sms", extras.getString("sms"));
+	    in.putExtra(BetaSMSService.TO, extras.getString(BetaSMSService.TO));
+	    in.putExtra(BetaSMSService.SMS, extras.getString(BetaSMSService.SMS));
 	    startService(in);
 	    this.finish();
 	}
-	//if it only contains data then it has the number to sms to
+	// if it only contains data then it has the number to sms to
 	else if (receivedIntent.getData() != null)
 	{
 	    Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
 	    checkDataIncomingIntent(receivedIntent);
 	}
+    }
+    
+    public class ResponseReceiver extends BroadcastReceiver {
+        public static final String ACTION_RESP = "nl.coralic.beta.sms.REFRESH_SALDO";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           
+            showBalance();
+        }
+        
     }
 }

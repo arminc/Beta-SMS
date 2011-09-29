@@ -18,101 +18,77 @@
 package nl.coralic.beta.sms.utils;
 
 import nl.coralic.beta.sms.Beta_SMS;
+import nl.coralic.beta.sms.Beta_SMS.ResponseReceiver;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
-import nl.coralic.beta.sms.utils.objects.Const;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.R;
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
-public class BetaSMSService extends Service
+public class BetaSMSService extends IntentService
 {
+    public static final String TO = "to";
+    public static final String SMS = "sms";
+
     private SharedPreferences properties;
 
-    @Override
-    public IBinder onBind(Intent arg0)
+    public BetaSMSService()
     {
-	return null;
+	super("BetaSMSService");
     }
 
     @Override
-    public void onCreate()
+    protected void onHandleIntent(Intent intent)
     {
 	properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSService.this);
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId)
-    {
-
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
 	// TODO: if the sms is bigger than 160charts it will fail, fix!
 
-	String to = intent.getExtras().getString("number");
-	String sms = intent.getExtras().getString("sms");
-
-	AsyncTask<String, Void, Response> task = new AsyncTask<String, Void, Response>()
+	String to = intent.getExtras().getString(TO);
+	String sms = intent.getExtras().getString(SMS);
+	Response response = BetamaxHandler.sendSMS(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString("PasswordKey", ""),
+		properties.getString("PhoneKey", ""), to, sms);
+	if (response.isResponseOke() == true)
 	{
-
-	    private String to;
-	    private String sms;
-	    private int startId;
-
-	    @Override
-	    protected Response doInBackground(String... s)
+	    //send broadcast
+	    Intent broadcastIntent = new Intent();
+	    broadcastIntent.setAction(ResponseReceiver.ACTION_RESP);
+	    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+	    sendBroadcast(broadcastIntent);
+	    
+	    
+	    SMSHelper smsHelper = new SMSHelper();
+	    if (properties.getBoolean("SaveSMSKey", false))
 	    {
-		to = s[0];
-		sms = s[1];
-		startId = Integer.valueOf(s[2]);
-		return BetamaxHandler.sendSMS(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString("PasswordKey", ""),
-			properties.getString("PhoneKey", ""), to, sms);
+		smsHelper.addSMS(getContentResolver(), sms, to);
 	    }
+	    
+	}
+	else
+	{
+	    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-	    @Override
-	    protected void onPostExecute(Response anwser)
-	    {
-		if (anwser.isResponseOke() == true)
-		{
-		    SMSHelper smsHelper = new SMSHelper();
-		    if (properties.getBoolean("SaveSMSKey", false))
-		    {
-			smsHelper.addSMS(getContentResolver(), sms, to);
-		    }
-		}
-		else
-		{
-		    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+	    int icon = R.drawable.ic_dialog_alert;
+	    CharSequence text = "Beta-SMS failed to send SMS";
+	    CharSequence contentTitle = "Can't send to: " + to;
+	    CharSequence contentText = response.getErrorMessage();
+	    long when = System.currentTimeMillis();
 
-		    int icon = R.drawable.ic_dialog_alert;
-		    CharSequence text = "Beta-SMS failed to send SMS";
-		    CharSequence contentTitle = "Can't send to: " + to;
-		    CharSequence contentText = anwser.getErrorMessage();
-		    long when = System.currentTimeMillis();
-
-		    Intent i = new Intent(getApplicationContext(), Beta_SMS.class);
-		    i.putExtra("number", to);
-		    i.putExtra("sms", sms);
-		    PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
-		    Notification notification = new Notification(icon, text, when);
-		    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		    notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
-		    notificationManager.notify(startId, notification);
-		}
-	    }
-	};
-	task.execute(to, sms, String.valueOf(startId));
-	return 1;
+	    Intent i = new Intent(getApplicationContext(), Beta_SMS.class);
+	    i.putExtra(TO, to);
+	    i.putExtra(SMS, sms);
+	    PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+	    Notification notification = new Notification(icon, text, when);
+	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+	    notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
+	    notificationManager.notify(1, notification);
+	}
     }
 }
