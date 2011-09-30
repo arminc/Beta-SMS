@@ -17,9 +17,12 @@
  */
 package nl.coralic.beta.sms.utils;
 
+import java.util.Random;
+
 import nl.coralic.beta.sms.Beta_SMS;
 import nl.coralic.beta.sms.Beta_SMS.ResponseReceiver;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.R;
 import android.app.IntentService;
@@ -29,10 +32,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
 public class BetaSMSService extends IntentService
 {
     public static final String TO = "to";
@@ -53,8 +53,7 @@ public class BetaSMSService extends IntentService
 
 	String to = intent.getExtras().getString(TO);
 	String sms = intent.getExtras().getString(SMS);
-	Response response = BetamaxHandler.sendSMS(properties.getString("ServiceKey", ""), properties.getString("UsernameKey", ""), properties.getString("PasswordKey", ""),
-		properties.getString("PhoneKey", ""), to, sms);
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(properties,to,sms));
 	if (response.isResponseOke() == true)
 	{
 	    //send broadcast
@@ -88,7 +87,8 @@ public class BetaSMSService extends IntentService
 	    Notification notification = new Notification(icon, text, when);
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
-	    notificationManager.notify(1, notification);
+	    Random generator = new Random( 19580427 );
+	    notificationManager.notify(generator.nextInt(), notification);
 	}
     }
 }

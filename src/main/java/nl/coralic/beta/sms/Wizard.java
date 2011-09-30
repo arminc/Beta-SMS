@@ -21,7 +21,8 @@
 package nl.coralic.beta.sms;
 
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
-import nl.coralic.beta.sms.utils.objects.Key;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
+import nl.coralic.beta.sms.utils.objects.Const;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -36,7 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -53,100 +53,143 @@ public class Wizard extends Activity
     ArrayAdapter<CharSequence> adapter;
     private AsyncTask<Void, Void, Response> task;
 
-    // TODO: integration Test case
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
 	super.onCreate(savedInstanceState);
-	//allow custom title
+	setView();
+	assignUiComponentsToVariables();
+	setListeners();
+    }
+
+    private void setView()
+    {
+	// allow custom title
 	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	setContentView(R.layout.wizard);
 	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
-	
+    }
+
+    private void assignUiComponentsToVariables()
+    {
 	spnProvider = (Spinner) findViewById(R.id.spnProvider);
 	adapter = ArrayAdapter.createFromResource(this, R.array.providers, android.R.layout.simple_spinner_item);
 	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	spnProvider.setAdapter(adapter);
-
 	txtUsername = (EditText) findViewById(R.id.txtUsername);
 	txtPassword = (EditText) findViewById(R.id.txtPassword);
-
 	done = (Button) findViewById(R.id.btnWizardNext);
+    }
+
+    private void setListeners()
+    {
 	done.setOnClickListener(new View.OnClickListener()
 	{
 	    public void onClick(View v)
 	    {
-		checkAccount();
+		if (areValuesCorrect())
+		{
+		    validateAccount();
+		}
 	    }
 	});
     }
 
-    private void checkAccount()
+    private boolean areValuesCorrect()
     {
 	if (txtUsername.getText().toString().equals(""))
 	{
 	    Toast.makeText(Wizard.this, getString(R.string.TOAST_USERNAME_EMPTY), Toast.LENGTH_SHORT).show();
-	    return;
+	    return false;
 	}
 	if (txtPassword.getText().toString().equals(""))
 	{
 	    Toast.makeText(Wizard.this, getString(R.string.TOAST_PASSWORD_EMPTY), Toast.LENGTH_SHORT).show();
-	    return;
+	    return false;
 	}
+	return true;
+    }
 
+    private void validateAccount()
+    {
 	task = new AsyncTask<Void, Void, Response>()
 	{
 	    @Override
 	    protected void onPreExecute()
 	    {
-		dialog = ProgressDialog.show(Wizard.this, "Verifying", Wizard.this.getString(R.string.ALERT_VERIFYING), true, true, new DialogInterface.OnCancelListener()
-		{
-		    public void onCancel(DialogInterface dialog)
-		    {
-			// If the users presses back button cancel the task
-			task.cancel(true);
-		    }
-		});
+		dialog = ProgressDialog.show(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFYING_TITLE), Wizard.this.getString(R.string.ALERT_VERIFYING), true, true,
+			new DialogInterface.OnCancelListener()
+			{
+			    public void onCancel(DialogInterface dialog)
+			    {
+				// If the users presses back button cancel the task
+				task.cancel(true);
+			    }
+			});
 	    }
 
 	    @Override
 	    protected Response doInBackground(Void... v)
 	    {
-		return BetamaxHandler
-			.sendSMS(adapter.getItem((int) spnProvider.getSelectedItemId()).toString(), txtUsername.getText().toString(), txtPassword.getText().toString(), "00", "00", "fake");
+		BetamaxArguments arguments = new BetamaxArguments(adapter.getItem((int) spnProvider.getSelectedItemId()).toString(),txtUsername.getText().toString(), txtPassword.getText().toString(), "00", "00", "fake");
+		return BetamaxHandler.sendSMS(arguments);
 	    }
 
 	    @Override
 	    protected void onPostExecute(Response response)
 	    {
 		dialog.dismiss();
-		// If we get an error as response then it means the username/password is wrong, otherwise it should be oke
-		if ("error".equalsIgnoreCase(response.getErrorMessage()))
+		if (isUsernamePasswordValid(response.getErrorMessage()))
 		{
-		    Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED_USERPASS), Toast.LENGTH_LONG).show();
-		}
-		else
-		{
-		    // If one of these then an http error occurred, in other cases it is oke
-		    if (R.string.ERR_CONN_ERR == response.getErrorCode() || R.string.ERR_NO_ARGUMENTS == response.getErrorCode() || R.string.ERR_PROV_NO_RESP == response.getErrorCode())
+		    if (isResponseOke(response.getErrorCode()))
 		    {
-			Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED) + " " + response.getErrorMessage(), Toast.LENGTH_LONG).show();
-		    }
-		    else
-		    {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Wizard.this);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean(Key.VERIFIED.toString(), true);
-			editor.putString(Key.USERNAME.toString(), txtUsername.getText().toString());
-			editor.putString(Key.PASSWORD.toString(), txtPassword.getText().toString());
-			editor.putFloat(Key.PROVIDERID.toString(), spnProvider.getSelectedItemId());
-			editor.commit();
+			setPreferences();
 			// We can just close this activity so it is not on the activity stack anymore
 			finish();
 		    }
+		    else
+		    {
+			Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED) + " " + response.getErrorMessage(), Toast.LENGTH_LONG).show();
+		    }
+		}
+		else
+		{
+		    Toast.makeText(Wizard.this, Wizard.this.getString(R.string.ALERT_VERIFY_FAILED_USERPASS), Toast.LENGTH_LONG).show();
 		}
 	    }
 	};
 	task.execute();
+    }
+
+    private boolean isUsernamePasswordValid(String errorMessage)
+    {
+	// If we get an error as response then it means the username/password is wrong, otherwise it should be oke
+	if ("error".equalsIgnoreCase(errorMessage))
+	{
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean isResponseOke(int errorCode)
+    {
+	// If one of these then an http error occurred, in other cases it is oke
+	if (R.string.ERR_CONN_ERR == errorCode || R.string.ERR_NO_ARGUMENTS == errorCode || R.string.ERR_PROV_NO_RESP == errorCode)
+	{
+	    return true;
+	}
+	return false;
+    }
+
+    private void setPreferences()
+    {
+	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Wizard.this);
+	SharedPreferences.Editor editor = prefs.edit();
+	editor.putBoolean(Const.KEY_VERIFIED, true);
+	editor.putString(Const.KEY_USERNAME, txtUsername.getText().toString());
+	editor.putString(Const.KEY_PASSWORD, txtPassword.getText().toString());
+	editor.putFloat(Const.KEY_PROVIDERID, spnProvider.getSelectedItemId());
+	editor.putString(Const.KEY_PROVIDER, spnProvider.getSelectedItem().toString());
+	editor.commit();
     }
 }

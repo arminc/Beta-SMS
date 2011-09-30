@@ -49,7 +49,6 @@ public class SmsTextCounter implements TextWatcher
 	// Not needed
     }
 
-    // Calculates until 5 messages
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
 	int smsChars = s.toString().length();

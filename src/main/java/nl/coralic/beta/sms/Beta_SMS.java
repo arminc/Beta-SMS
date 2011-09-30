@@ -26,8 +26,8 @@ import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
 import nl.coralic.beta.sms.utils.contact.PhonesHandler;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
 import nl.coralic.beta.sms.utils.objects.Const;
-import nl.coralic.beta.sms.utils.objects.Key;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -80,58 +80,111 @@ public class Beta_SMS extends Activity
     AlertDialog chooseNumberAlert;
     ProgressDialog showStatusAlert;
 
-    String intentValue;
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+	Log.d(Const.TAG_MAIN, "Starting the application");
+	// set context to variable
 	context = getApplicationContext();
-
-	// TODO: check for incoming intent?
-	intentValue = null;
-	checkForIntent(getIntent());
 	super.onCreate(savedInstanceState);
+	loadProperties();
+	validateAcount();
+	setView();
+	assignUiComponentsToVariables();
+	showBalance();
+	checkIntent(getIntent());
+	setListeners();
+	// set focus on the sms text field
+	txtSmsText.requestFocus();
+    }
+
+    private void loadProperties()
+    {
 	properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
-	// Check if the account is valid, if not open the wizard (should happen only the first time you open the app
+    }
+
+    private void validateAcount()
+    {
+	// Check if the account is valid, if not open the wizard
 	if (!Utils.checkForValidAccount(properties))
 	{
 	    startActivity(new Intent(this, Wizard.class));
 	}
+    }
 
-	// Set the view
-	Log.d(Const.TAG_MAIN, "Creating the view and the rest of the GUI.");
-
+    private void setView()
+    {
 	// allow custom title
 	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-
 	setContentView(R.layout.betasms);
-
-	// set custom title
+	// set custom title(should happen only the first time you open the app)
 	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
+    }
+
+    private void assignUiComponentsToVariables()
+    {
 	txtTitleSaldoValue = (TextView) findViewById(R.id.txtTitleSaldoValue);
 	txtTitleSaldo = (TextView) findViewById(R.id.txtTitleSaldo);
-
-	// show providers
 	providers = getResources().getStringArray(R.array.providers);
-
-	// get the rest of the ui components
 	to = (AutoCompleteTextView) findViewById(R.id.txtTo);
 	txtTextCount = (TextView) findViewById(R.id.txtTextCount);
 	txtSmsText = (EditText) findViewById(R.id.txtSmsText);
+	txtSmsText.addTextChangedListener(new SmsTextCounter(txtTextCount));
 	send = (Button) findViewById(R.id.btnSend);
 	contact = (Button) findViewById(R.id.btnContact);
+    }
 
-	// get the balance
-	showBalance();
-
-	txtSmsText.addTextChangedListener(new SmsTextCounter(txtTextCount));
-
-	if (intentValue != null)
+    private void showBalance()
+    {
+	Log.d(Const.TAG_MAIN, "Get the balance.");
+	AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>()
 	{
-	    to.setText(intentValue);
-	}
+	    @Override
+	    protected String doInBackground(Void... v)
+	    {
+		return BetamaxHandler.getBalance(new BetamaxArguments(properties));
+	    }
 
+	    @Override
+	    protected void onPostExecute(String balance)
+	    {
+		// Don't show anything if balance is unknown
+		if (Utils.isBalanceAvailable(balance))
+		{
+		    txtTitleSaldo.setText(getString(R.string.txtTitleSaldo));
+		    txtTitleSaldoValue.setText(balance);
+		}
+	    }
+	};
+	task.execute();
+    }
+
+    private void checkIntent(Intent receivedIntent)
+    {
+	Bundle extras = receivedIntent.getExtras();
+	// if it contains extras then it's our own bundle
+	if (extras != null)
+	{
+	    Iterator<String> i = extras.keySet().iterator();
+	    while (i.hasNext())
+	    {
+		String tmp = i.next();
+		Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
+	    }
+	    to.setText(extras.getString(BetaSMSService.TO));
+	    txtSmsText.setText(extras.getString(BetaSMSService.SMS));
+	}
+	// if it only contains data then it has the number to sms to
+	else if (receivedIntent.getData() != null)
+	{
+	    Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
+	    checkDataIncomingIntent(receivedIntent);
+	}
+    }
+
+    private void setListeners()
+    {
 	// auto complete contacts, show all phones
 	phoneHandler = new PhonesHandler();
 	to.setAdapter(phoneHandler.getContactsPhonesListAdapter(getContentResolver(), this));
@@ -159,9 +212,6 @@ public class Beta_SMS extends Activity
 		onSend();
 	    }
 	});
-
-	// set focus on the sms text field
-	txtSmsText.requestFocus();
     }
 
     @Override
@@ -176,9 +226,9 @@ public class Beta_SMS extends Activity
 	}
     }
 
-    public static Context getAppContext()
+    public static String getErrorMsgFromErrorCode(int errorCode)
     {
-	return context;
+	return context.getText(errorCode).toString();
     }
 
     /**
@@ -253,7 +303,7 @@ public class Beta_SMS extends Activity
     {
 	Log.d(Const.TAG_MAIN, "The intent data.");
 	String param = Utils.stripString(recintent.getDataString());
-	intentValue = URLDecoder.decode(param);
+	to.setText(URLDecoder.decode(param));
     }
 
     /**
@@ -326,72 +376,23 @@ public class Beta_SMS extends Activity
 	return true;
     }
 
-    private void showBalance()
-    {
-	Log.d(Const.TAG_MAIN, "User allowes for checking saldo so go get it.");
-	AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>()
-	{
-	    @Override
-	    protected String doInBackground(Void... v)
-	    {
-		return BetamaxHandler.getBalance(providers[(int) properties.getFloat(Key.PROVIDERID.toString(), 0)], properties.getString(Key.USERNAME.toString(), ""),
-			properties.getString(Key.PASSWORD.toString(), ""));
-	    }
-
-	    @Override
-	    protected void onPostExecute(String anwser)
-	    {
-		// if we receive * don't show that
-		if (!"*".equals(anwser))
-		{
-		    txtTitleSaldo.setText(getString(R.string.txtTitleSaldo));
-		    txtTitleSaldoValue.setText(anwser);
-		}
-	    }
-	};
-	task.execute();
-    }
-
     @Override
     protected void onDestroy()
     {
-	//stopService(new Intent(this, BetaSMSService.class));
+	// stopService(new Intent(this, BetaSMSService.class));
 	super.onDestroy();
     }
 
-    private void checkForIntent(Intent receivedIntent)
+    public class ResponseReceiver extends BroadcastReceiver
     {
-	Bundle extras = receivedIntent.getExtras();
-	// if it contains extras then it's our own bundle
-	if (extras != null)
+	public static final String ACTION_RESP = "nl.coralic.beta.sms.REFRESH_SALDO";
+
+	@Override
+	public void onReceive(Context context, Intent intent)
 	{
-	    Iterator<String> i = extras.keySet().iterator();
-	    while (i.hasNext())
-	    {
-		String tmp = i.next();
-		Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
-	    }
-	    Intent in = new Intent(this, BetaSMSService.class);
-	    in.putExtra(BetaSMSService.TO, extras.getString(BetaSMSService.TO));
-	    in.putExtra(BetaSMSService.SMS, extras.getString(BetaSMSService.SMS));
-	    startService(in);
-	    this.finish();
+
+	    showBalance();
 	}
-	// if it only contains data then it has the number to sms to
-	else if (receivedIntent.getData() != null)
-	{
-	    Log.d(Const.TAG_MAIN, "Got an non empty Intent.");
-	    checkDataIncomingIntent(receivedIntent);
-	}
-    }
-    
-    public class ResponseReceiver extends BroadcastReceiver {
-        public static final String ACTION_RESP = "nl.coralic.beta.sms.REFRESH_SALDO";
-        @Override
-        public void onReceive(Context context, Intent intent) {
-           
-            showBalance();
-        }
-        
+
     }
 }

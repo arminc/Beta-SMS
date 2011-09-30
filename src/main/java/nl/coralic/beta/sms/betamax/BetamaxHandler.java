@@ -20,59 +20,30 @@ package nl.coralic.beta.sms.betamax;
 import java.util.HashMap;
 
 import nl.coralic.beta.sms.utils.http.HttpHandler;
-import nl.coralic.beta.sms.utils.objects.BetamaxResponse;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
+import nl.coralic.beta.sms.utils.objects.Const;
 import nl.coralic.beta.sms.utils.objects.Response;
 
 public class BetamaxHandler
 {
-    private static String USERNAME = "username";
-    private static String PASSWORD = "password";
-    private static String TO = "to";
-    private static String TEXT = "text";
-    private static String FROM = "from";
-    
-    public static String getBalance(String tmpUrl, String username, String password)
+    public static String getBalance(BetamaxArguments arguments)
     {
-	String url = getBalanceUrl(tmpUrl);
-	HashMap<String,String> arguments = new HashMap<String, String>();
-	arguments.put(USERNAME, username);
-	arguments.put(PASSWORD, password);
-	Response response = HttpHandler.execute(url, arguments);
+	HashMap<String,String> postArguments = arguments.getBalancePostArguments();
+	Response response = HttpHandler.execute(arguments.getBalanceUrl(), postArguments);
 	if(response.isResponseOke())
 	{
-	    //Betamax only returns balance here so we can pass it directly
-	    //Remove the unwanted white spaces
+	    //Betamax only returns the amount nothing else. Remove the unwanted white spaces from the response
 	    return response.getResponse().trim();
 	}
-	return "*";
+	return Const.BALANCE_UNKNOWN;
     }
     
-    public static Response sendSMS(String tmpUrl, String username, String password, String from, String to, String text)
+    public static Response sendSMS(BetamaxArguments arguments)
     {
-	String url = getSendSmsUrl(tmpUrl);
-	HashMap<String,String> arguments = new HashMap<String, String>(); 
-	arguments.put(USERNAME, username);
-	arguments.put(PASSWORD, password);
-	arguments.put(TO, to.replace("+", "00"));
-	arguments.put(FROM, from.replace("+", "00"));
-	arguments.put(TEXT, text);
-	Response response = HttpHandler.execute(url, arguments);
-	if(response.isResponseOke())
-	{
-	    BetamaxResponse betamaxResponse = new BetamaxResponse(response.isResponseOke(), response.getResponse());
-	    betamaxResponse.validateBetamaxResponse();
-	    return betamaxResponse;
-	}
+	HashMap<String,String> postArguments = arguments.getSmsPostArguments();	
+	Response response = HttpHandler.execute(arguments.getSendSmsUrl(), postArguments);
+	//Betamax returns an xml here so we need to validate it
+	response.validateBetamaxResponse();
 	return response;
-    }
-    
-    private static String getBalanceUrl(String tmpUrl)
-    {
-	return "https://www."+tmpUrl+"/myaccount/getbalance.php";
-    }
-    
-    private static String getSendSmsUrl(String tmpUrl)
-    {
-	return "https://www."+tmpUrl+"/myaccount/sendsms.php";
     }
 }

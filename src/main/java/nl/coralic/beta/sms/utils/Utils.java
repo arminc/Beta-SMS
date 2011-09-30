@@ -17,10 +17,15 @@
  */
 package nl.coralic.beta.sms.utils;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
-import nl.coralic.beta.sms.Beta_SMS;
-import nl.coralic.beta.sms.utils.objects.Key;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
+import nl.coralic.beta.sms.utils.objects.Const;
 
 import android.content.SharedPreferences;
 
@@ -37,11 +42,20 @@ public class Utils
      */
     public static boolean checkForValidAccount(SharedPreferences properties)
     {
-	if (properties.contains(Key.VERIFIED.toString()) && properties.getBoolean(Key.VERIFIED.toString(), false) == true)
+	if (properties.contains(Const.KEY_VERIFIED) && properties.getBoolean(Const.KEY_VERIFIED.toString(), false) == true)
 	{
 	    return true;
 	}
 	return false;
+    }
+    
+    public static boolean isBalanceAvailable(String balance)
+    {
+	if(Const.BALANCE_UNKNOWN.equals(balance))
+	{
+	    return false;
+	}
+	return true;
     }
     
     /**
@@ -79,5 +93,15 @@ public class Utils
 	    }
 	}
 	return smsSplit;
-    }    
+    }
+    
+    public static Document getDocument(String data) throws Exception
+    {
+	Document doc = null;
+	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	DocumentBuilder builder = factory.newDocumentBuilder();
+	ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.getBytes());
+	doc = builder.parse(byteArrayInputStream);
+	return doc;
+    }
 }

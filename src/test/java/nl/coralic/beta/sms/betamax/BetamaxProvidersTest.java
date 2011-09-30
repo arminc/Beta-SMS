@@ -24,6 +24,7 @@ public class BetamaxProvidersTest
     {
 	return "https://"+provider+"/myaccount/getbalance.php";
     }
+    //TODO: add? budgetsip, callingcredit, voipblast. Voipwise works?
     
     @Test
     public void onetwovoipCOM()

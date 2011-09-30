@@ -40,31 +40,31 @@ import org.apache.http.protocol.HTTP;
 
 public class HttpHandler
 {
-    public static Response execute(String url, HashMap<String, String> data)
+    public static Response execute(String url, HashMap<String, String> arguments)
     {
-	List<NameValuePair> postdata = new ArrayList<NameValuePair>();
-	if (data != null)
+	try
 	{
-	    for (String key : data.keySet())
-	    {
-		postdata.add(new BasicNameValuePair(key, data.get(key)));
-	    }
+	    List<NameValuePair> postdata = createPostData(arguments);
+	    return doPost(url, postdata);
 	}
-	else
+	catch(Exception e)
 	{
 	    return new Response(R.string.ERR_NO_ARGUMENTS);
-	}
-	return doPost(url, postdata);
+	}	
     }
-
-    private static HttpClient getHttpClient()
+    
+    private static List<NameValuePair> createPostData(HashMap<String, String> arguments) throws Exception
     {
-	HttpParams httpParameters = new BasicHttpParams();
-	int timeoutConnection = 28000;
-	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-	int timeoutSocket = 28000;
-	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-	return new DefaultHttpClient(httpParameters);
+	List<NameValuePair> postdata = new ArrayList<NameValuePair>();
+	if (arguments != null)
+	{
+	    for (String key : arguments.keySet())
+	    {
+		postdata.add(new BasicNameValuePair(key, arguments.get(key)));
+	    }
+	    return postdata;
+	}
+	throw new Exception("No arguments");
     }
 
     private static Response doPost(String url, List<NameValuePair> postdata)
@@ -78,7 +78,7 @@ public class HttpHandler
 	    if (response.getStatusLine().getStatusCode() == 200)
 	    {
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
-		return new Response(true,responseHandler.handleResponse(response));
+		return new Response(responseHandler.handleResponse(response));
 	    }
 	    else
 	    {
@@ -94,5 +94,15 @@ public class HttpHandler
 	    // Release the resources
 	    httpclient.getConnectionManager().shutdown();
 	}
+    }
+    
+    private static HttpClient getHttpClient()
+    {
+	HttpParams httpParameters = new BasicHttpParams();
+	int timeoutConnection = 28000;
+	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+	int timeoutSocket = 28000;
+	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+	return new DefaultHttpClient(httpParameters);
     }
 }

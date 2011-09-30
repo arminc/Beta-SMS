@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
 import nl.coralic.beta.sms.utils.objects.Response;
 
 import org.junit.BeforeClass;
@@ -42,7 +43,7 @@ public class BetamaxHandlerTest
     @Test
     public void sendSmsWrongUsernamePassword()
     {
-	Response response = BetamaxHandler.sendSMS(provider, "WRONG", "WRONG", "00", "00", "fake");
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(provider, "WRONG", "WRONG", "00", "00", "fake"));
 	assertFalse(response.isResponseOke());
 	assertEquals("error", response.getErrorMessage());
     }   
@@ -50,7 +51,7 @@ public class BetamaxHandlerTest
     @Test
     public void sendSmsWrongToNumber()
     {
-	Response response = BetamaxHandler.sendSMS(provider, username, password, "00", "00", "fake");
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(provider, username, password, "00", "00", "fake"));
 	assertFalse(response.isResponseOke());
 	assertEquals("Invalid Number", response.getErrorMessage());
     }
@@ -58,7 +59,7 @@ public class BetamaxHandlerTest
     @Test
     public void sendSmsLowBalance()
     {
-	Response response = BetamaxHandler.sendSMS(provider, username, password, "00", "0031612345678", "fake");
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(provider, username, password, "00", "0031612345678", "fake"));
 	assertFalse(response.isResponseOke());
 	assertEquals("Sorry, you do not have enough credit to send this sms. Go to your accountpage to buy credit!", response.getErrorMessage());
     }

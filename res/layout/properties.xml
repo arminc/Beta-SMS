@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<Preference android:title="Wizard" android:key="myKey" android:summary="Start the wizard to configure your account"></Preference>
+	<Preference android:title="Wizard" android:key="Wizard" android:summary="Start the wizard to configure your account"></Preference>
 	<PreferenceCategory android:title="@string/SET_PHONE">
 		<EditTextPreference android:key="@string/SET_PHONE_KEY"
 			android:title="@string/SET_PHONE_TITLE" android:dialogTitle="@string/SET_PHONE_TITLE_DIALOG"

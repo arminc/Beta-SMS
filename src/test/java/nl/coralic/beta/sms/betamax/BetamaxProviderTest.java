@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
 import nl.coralic.beta.sms.utils.objects.Response;
 
 import org.junit.BeforeClass;
@@ -57,7 +58,7 @@ public class BetamaxProviderTest
     public void getBalance()
     {
 	//Provider always returns 0 even if the password is wrong. We are not able to make distinction between good and wrong
-	String balance = BetamaxHandler.getBalance(provider, username, password);
+	String balance = BetamaxHandler.getBalance(new BetamaxArguments(provider, username, password));
 	assertEquals(expectedBalance, balance);
     }
 
@@ -65,7 +66,7 @@ public class BetamaxProviderTest
     @Test
     public void sendSms()
     {
-	Response response = BetamaxHandler.sendSMS(provider, username, password, from, to, text);
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(provider, username, password, from, to, text));
 	assertTrue(response.isResponseOke());
     }
 }
