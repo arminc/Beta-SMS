@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 
 import nl.coralic.beta.sms.betamax.BetamaxSMSService;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.ApplicationContextHelper;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
@@ -59,7 +60,6 @@ import android.widget.Toast;
 public class Beta_SMS extends Activity
 {
     SharedPreferences properties;
-    private static Context context;
 
     Intent intent;
 
@@ -85,7 +85,7 @@ public class Beta_SMS extends Activity
     {
 	Log.d(Const.TAG_MAIN, "Starting the application");
 	// set context to variable
-	context = getApplicationContext();
+	ApplicationContextHelper.setContext(getApplicationContext());
 	super.onCreate(savedInstanceState);
 	loadProperties();
 	validateAcount();
@@ -217,11 +217,6 @@ public class Beta_SMS extends Activity
 	{
 	    finish();
 	}
-    }
-
-    public static String getErrorMsgFromErrorCode(int errorCode)
-    {
-	return context.getText(errorCode).toString();
     }
 
     /**

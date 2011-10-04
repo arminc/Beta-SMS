@@ -20,8 +20,8 @@ package nl.coralic.beta.sms.utils.objects;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import nl.coralic.beta.sms.Beta_SMS;
 import nl.coralic.beta.sms.R;
+import nl.coralic.beta.sms.utils.ApplicationContextHelper;
 import nl.coralic.beta.sms.utils.Utils;
 
 public class Response
@@ -61,7 +61,7 @@ public class Response
 	}
 	else
 	{
-	    return Beta_SMS.getErrorMsgFromErrorCode(errorCode);
+	    return ApplicationContextHelper.getErrorMsgFromErrorCode(errorCode);
 	}
     }
 

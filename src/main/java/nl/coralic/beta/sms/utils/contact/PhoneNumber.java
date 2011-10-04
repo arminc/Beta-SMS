@@ -20,14 +20,15 @@
  */
 package nl.coralic.beta.sms.utils.contact;
 
-import nl.coralic.beta.sms.utils.objects.Const;
+import nl.coralic.beta.sms.R;
+import nl.coralic.beta.sms.utils.ApplicationContextHelper;
 
 /**
  * @author "Armin Čoralić"
  */
 public class PhoneNumber
 {
-	private String phoneNumberType = Const.PHONE_TYPE_MOBILE;
+	private String phoneNumberType = ApplicationContextHelper.getStringUsingR_ID(R.string.PHONE_TYPE_MOBILE);
 	private String phoneNumber = "";
 
 	public String getPhoneNumberType()

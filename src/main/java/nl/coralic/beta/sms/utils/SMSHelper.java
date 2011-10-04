@@ -20,7 +20,6 @@
  */
 package nl.coralic.beta.sms.utils;
 
-import nl.coralic.beta.sms.utils.objects.Const;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
@@ -30,6 +29,14 @@ import android.net.Uri;
  */
 public class SMSHelper
 {
+    private static final String ADDRESS = "address";
+    private static final String PERSON = "person";
+    private static final String DATE = "date";
+    private static final String READ = "read";
+    private static final String STATUS = "status";
+    private static final String TYPE = "type";
+    private static final String BODY = "body";
+    
     /**
      * Adds SMS to the phones SMS database
      * 
@@ -40,12 +47,12 @@ public class SMSHelper
     public void addSMS(ContentResolver cr, String body, String phonenumber)
     {
 	ContentValues values = new ContentValues();
-	values.put(Const.ADDRESS, phonenumber);
-	values.put(Const.DATE, getDate());
-	values.put(Const.READ, 1);
-	values.put(Const.STATUS, -1);
-	values.put(Const.TYPE, 2);
-	values.put(Const.BODY, body);
+	values.put(ADDRESS, phonenumber);
+	values.put(DATE, getDate());
+	values.put(READ, 1);
+	values.put(STATUS, -1);
+	values.put(TYPE, 2);
+	values.put(BODY, body);
 	cr.insert(Uri.parse("content://sms"), values);
     }
 

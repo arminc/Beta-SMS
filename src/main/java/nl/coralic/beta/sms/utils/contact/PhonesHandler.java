@@ -20,6 +20,8 @@
  */
 package nl.coralic.beta.sms.utils.contact;
 
+import nl.coralic.beta.sms.R;
+import nl.coralic.beta.sms.utils.ApplicationContextHelper;
 import nl.coralic.beta.sms.utils.objects.Const;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -92,15 +94,15 @@ public class PhonesHandler
 		}
 		if (type == ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
 		{
-			return Const.PHONE_TYPE_HOME;
+			return ApplicationContextHelper.getStringUsingR_ID(R.string.PHONE_TYPE_HOME);
 		}
 		if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
 		{
-			return Const.PHONE_TYPE_MOBILE;
+			return ApplicationContextHelper.getStringUsingR_ID(R.string.PHONE_TYPE_MOBILE);
 		}
 		else
 		{
-			return Const.PHONE_TYPE_OTHER;
+			return ApplicationContextHelper.getStringUsingR_ID(R.string.PHONE_TYPE_OTHER);
 		}
 	}
 }

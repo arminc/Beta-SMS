@@ -25,41 +25,20 @@ package nl.coralic.beta.sms.utils.objects;
  */
 public class Const
 {
-    public static final String TAG_MAIN = "MAIN";
-    public static final String TAG_DB = "DB";
-    public static final String TAG_SEND = "SEND";
-    public static final String TAG_PHH = "PhonesHandler";
-    public static final String TAG_CPLA = "CPlistAdapter";
-    public static final String TAG_UTILS = "Utils";
-    public static final String TAG_SERV = "BETASERVICE";
-    public static final String TAG_RSP = "RESPONSE";
-    public static final String TAG_BLC = "BALANCEHANDLER";
-    public static final String TAG_HTTP = "HttpHandler";
+    public static final String TAG_MAIN = "BETA_SMS";
+    public static final String TAG_PHH = "PHONESHANDLER";
+    public static final String TAG_CPLA = "CPLISTADAPTER";
 
     public static final int PICK_CONTACT = 1;
 
-    public static final String ADDRESS = "address";
-    public static final String PERSON = "person";
-    public static final String DATE = "date";
-    public static final String READ = "read";
-    public static final String STATUS = "status";
-    public static final String TYPE = "type";
-    public static final String BODY = "body";
-    public static final int MESSAGE_TYPE_INBOX = 1;
-    public static final int MESSAGE_TYPE_SENT = 2;
-
-    // TODO: shoulden't this come from the string file?
-    public static final String PHONE_TYPE_MOBILE = "Mobile";
-    public static final String PHONE_TYPE_HOME = "Home";
-    public static final String PHONE_TYPE_OTHER = "Other";
-
-    //these are used for diffrent things, don't change them because they are also used for http post argument names when sending sms to betamax
-    public static final String KEY_VERIFIED = "VERIFIED";
+    //these are used for different things, don't change [KEY_USERNAME,KEY_PASSWORD,KEY_TO,KEY_TEXT,KEY_FROM]
+    //because they are also used for http post argument names when sending sms to betamax
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_TO = "to";
     public static final String KEY_TEXT = "text";
     public static final String KEY_FROM = "from";
+    public static final String KEY_VERIFIED = "VERIFIED";
     public static final String KEY_PROVIDERID = "PROVIDERID";
     public static final String KEY_PROVIDER = "PROVIDER";
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="app_name">Beta-SMS</string>
+	<string name="widget_name">Beta-SMS Widget</string>
 	<string name="lblSelectProvider">Please select a Betamax provider</string>
 	<string-array name="providers">
 		<item>12voip.com</item>
@@ -60,4 +62,20 @@
 	<string name="txtSmsText_hint">Type to compose</string>
 	<string name="balanceText">Balance:</string>
 	<string name="txtTitleSaldo">Saldo:</string>
+	<string name="PHONE_TYPE_MOBILE">Mobile</string>
+	<string name="PHONE_TYPE_HOME">Home</string>
+	<string name="PHONE_TYPE_OTHER">Other</string>
+	<string name="BUTTON_SEND">Send</string>
+	<string name="INFO">Beta-SMS application is made by Armin Čoralić and is released as opensource. If you wish to read more about the application or track the progress please visit the website at http://blog.coralic.nl/beta-sms . If you have an suggestion or a bug please register it here http://beta-sms.coralic.nl</string>
+	<string name="SET_PHONE">Phone number</string>
+	<string name="SET_PHONE_TITLE">Phone number</string>
+	<string name="SET_PHONE_TITLE_DIALOG">Your phone number please...</string>
+	<string name="SET_PHONE_TITLE_HINT">Your nick or cell number</string>
+	<string name="SET_PHONE_KEY">PhoneKey</string>
+	<string name="MENU_INFO">Info</string>
+	<string name="MENU_SET">Settings</string>
+	<string name="MAIN_TO_EMPTY">Phone number can not be empty.</string>
+	<string name="MAIN_SMS_EMPTY">SMS text can not be empty.</string>
+	<string name="INFO_TITLE">Info about Beta-SMS</string>
+	<string name="SMS_SENDING">Sending SMS</string>
 </resources>
