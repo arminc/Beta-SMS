@@ -65,4 +65,6 @@ public class Const
 
     public static final int BETAMAX_FIXED_ERROR_CODE = 9999;
     public static final String BALANCE_UNKNOWN = "*";
+    
+    public static final String ACTION_RESP = "nl.coralic.beta.sms.REFRESH_SALDO";
 }

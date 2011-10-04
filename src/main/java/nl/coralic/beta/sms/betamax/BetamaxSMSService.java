@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.coralic.beta.sms.utils;
+package nl.coralic.beta.sms.betamax;
 
 import java.util.Random;
 
 import nl.coralic.beta.sms.Beta_SMS;
-import nl.coralic.beta.sms.Beta_SMS.ResponseReceiver;
-import nl.coralic.beta.sms.betamax.BetamaxHandler;
+import nl.coralic.beta.sms.utils.SMSHelper;
 import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
+import nl.coralic.beta.sms.utils.objects.Const;
 import nl.coralic.beta.sms.utils.objects.Response;
 import android.R;
 import android.app.IntentService;
@@ -33,14 +33,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-public class BetaSMSService extends IntentService
+public class BetamaxSMSService extends IntentService
 {
     public static final String TO = "to";
     public static final String SMS = "sms";
 
     private SharedPreferences properties;
 
-    public BetaSMSService()
+    public BetamaxSMSService()
     {
 	super("BetaSMSService");
     }
@@ -48,7 +48,7 @@ public class BetaSMSService extends IntentService
     @Override
     protected void onHandleIntent(Intent intent)
     {
-	properties = PreferenceManager.getDefaultSharedPreferences(BetaSMSService.this);
+	properties = PreferenceManager.getDefaultSharedPreferences(BetamaxSMSService.this);
 	// TODO: if the sms is bigger than 160charts it will fail, fix!
 
 	String to = intent.getExtras().getString(TO);
@@ -58,7 +58,7 @@ public class BetaSMSService extends IntentService
 	{
 	    //send broadcast
 	    Intent broadcastIntent = new Intent();
-	    broadcastIntent.setAction(ResponseReceiver.ACTION_RESP);
+	    broadcastIntent.setAction(Const.ACTION_RESP);
 	    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
 	    sendBroadcast(broadcastIntent);
 	    

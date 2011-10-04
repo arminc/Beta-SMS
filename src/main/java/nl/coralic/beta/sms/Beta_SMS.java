@@ -18,10 +18,9 @@
 package nl.coralic.beta.sms;
 
 import java.net.URLDecoder;
-import java.util.Iterator;
 
+import nl.coralic.beta.sms.betamax.BetamaxSMSService;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
-import nl.coralic.beta.sms.utils.BetaSMSService;
 import nl.coralic.beta.sms.utils.SmsTextCounter;
 import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.contact.PhoneNumbers;
@@ -166,14 +165,8 @@ public class Beta_SMS extends Activity
 	// if it contains extras then it's our own bundle
 	if (extras != null)
 	{
-	    Iterator<String> i = extras.keySet().iterator();
-	    while (i.hasNext())
-	    {
-		String tmp = i.next();
-		Log.d(Const.TAG_MAIN, "Bundle key: " + tmp + " value: " + extras.getString(tmp));
-	    }
-	    to.setText(extras.getString(BetaSMSService.TO));
-	    txtSmsText.setText(extras.getString(BetaSMSService.SMS));
+	    to.setText(extras.getString(BetamaxSMSService.TO));
+	    txtSmsText.setText(extras.getString(BetamaxSMSService.SMS));
 	}
 	// if it only contains data then it has the number to sms to
 	else if (receivedIntent.getData() != null)
@@ -344,9 +337,9 @@ public class Beta_SMS extends Activity
     {
 	if (fieldsNotEmpty())
 	{
-	    Intent in = new Intent(this, BetaSMSService.class);
-	    in.putExtra(BetaSMSService.TO, to.getText().toString());
-	    in.putExtra(BetaSMSService.SMS, txtSmsText.getText().toString());
+	    Intent in = new Intent(this, BetamaxSMSService.class);
+	    in.putExtra(BetamaxSMSService.TO, to.getText().toString());
+	    in.putExtra(BetamaxSMSService.SMS, txtSmsText.getText().toString());
 	    startService(in);
 	    Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
 	    if (properties.getBoolean("DeleteTextKey", false))
@@ -385,8 +378,6 @@ public class Beta_SMS extends Activity
 
     public class ResponseReceiver extends BroadcastReceiver
     {
-	public static final String ACTION_RESP = "nl.coralic.beta.sms.REFRESH_SALDO";
-
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
