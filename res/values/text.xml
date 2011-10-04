@@ -6,7 +6,9 @@
 	<string-array name="providers">
 		<item>12voip.com</item>
 		<item>actionvoip.com</item>
+		<item>budgetsip.com</item>
 		<item>calleasy.com</item>
+		<item>callingcredit.com</item>
 		<item>cheapvoip.com</item>
 		<item>dialnow.com</item>
 		<item>freecall.com</item>
@@ -24,6 +26,7 @@
 		<item>smsdiscount.com</item>
 		<item>smslisto.com</item>
 		<item>sparvoip.de</item>
+		<item>voipblast.com</item>
 		<item>voipbuster.com</item>
 		<item>voipbusterpro.com</item>
 		<item>voipcheap.co.uk</item>
@@ -33,6 +36,7 @@
 		<item>voipian.com</item>
 		<item>voipraider.com</item>
 		<item>voipstunt.com</item>
+		<item>voipwise.com</item>
 		<item>voipzoom.com</item>
 		<item>webcalldirect.com</item>
 	</string-array>

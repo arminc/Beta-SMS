@@ -24,7 +24,6 @@ public class BetamaxProvidersTest
     {
 	return "https://"+provider+"/myaccount/getbalance.php";
     }
-    //TODO: add? budgetsip, callingcredit, voipblast. Voipwise works?
     
     @Test
     public void onetwovoipCOM()
@@ -47,12 +46,32 @@ public class BetamaxProvidersTest
     }
     
     @Test
+    public void budgetsipCOM()
+    {
+	Response response  = HttpHandler.execute(getBalanceUrl("www.budgetsip.com"), arguments);
+	assertTrue(response.isResponseOke());
+	assertEquals("0", response.getResponse());
+	response  = HttpHandler.execute(getSendSmsUrl("www.budgetsip.com"), arguments);
+	assertTrue(response.isResponseOke());
+    }
+    
+    @Test
     public void calleasyCOM()
     {
 	Response response  = HttpHandler.execute(getBalanceUrl("www.calleasy.com"), arguments);
 	assertTrue(response.isResponseOke());
 	assertEquals("0", response.getResponse());
 	response  = HttpHandler.execute(getSendSmsUrl("www.calleasy.com"), arguments);
+	assertTrue(response.isResponseOke());
+    }
+    
+    @Test
+    public void callingcreditCOM()
+    {
+	Response response  = HttpHandler.execute(getBalanceUrl("www.callingcredit.com"), arguments);
+	assertTrue(response.isResponseOke());
+	assertEquals("0", response.getResponse());
+	response  = HttpHandler.execute(getSendSmsUrl("www.callingcredit.com"), arguments);
 	assertTrue(response.isResponseOke());
     }
     
@@ -259,6 +278,16 @@ public class BetamaxProvidersTest
     }
     
     @Test
+    public void voipblastCOM()
+    {
+	Response response  = HttpHandler.execute(getBalanceUrl("www.voipblast.com"), arguments);
+	assertTrue(response.isResponseOke());
+	assertEquals("0", response.getResponse());
+	response  = HttpHandler.execute(getSendSmsUrl("www.voipblast.com"), arguments);
+	assertTrue(response.isResponseOke());
+    }
+    
+    @Test
     public void voipbusterCOM()
     {
 	Response response  = HttpHandler.execute(getBalanceUrl("www.voipbuster.com"), arguments);
@@ -349,14 +378,13 @@ public class BetamaxProvidersTest
 	assertTrue(response.isResponseOke());
     }
     
-    @Ignore
     @Test
     public void voipwiseCOM()
     {
 	Response response  = HttpHandler.execute(getBalanceUrl("www.voipwise.com"), arguments);
 	assertTrue(response.isResponseOke());
 	assertEquals("0", response.getResponse());
-	response  = HttpHandler.execute(getSendSmsUrl("www.voipwise.comm"), arguments);
+	response  = HttpHandler.execute(getSendSmsUrl("www.voipwise.com"), arguments);
 	assertTrue(response.isResponseOke());
     }
     
