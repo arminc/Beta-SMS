@@ -78,4 +78,6 @@
 	<string name="MAIN_SMS_EMPTY">SMS text can not be empty.</string>
 	<string name="INFO_TITLE">Info about Beta-SMS</string>
 	<string name="SMS_SENDING">Sending SMS</string>
+	<string name="NOTIFICATION_POPUP_TITLE">Beta-SMS failed</string>
+	<string name="NOTIFICATION_TITLE">Failed on </string>
 </resources>

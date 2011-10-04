@@ -17,14 +17,16 @@
  */
 package nl.coralic.beta.sms.betamax;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 import nl.coralic.beta.sms.Beta_SMS;
+import nl.coralic.beta.sms.R;
+import nl.coralic.beta.sms.utils.ApplicationContextHelper;
 import nl.coralic.beta.sms.utils.SMSHelper;
+import nl.coralic.beta.sms.utils.Utils;
 import nl.coralic.beta.sms.utils.objects.BetamaxArguments;
 import nl.coralic.beta.sms.utils.objects.Const;
 import nl.coralic.beta.sms.utils.objects.Response;
-import android.R;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -33,6 +35,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 public class BetamaxSMSService extends IntentService
 {
     public static final String TO = "to";
@@ -48,36 +51,84 @@ public class BetamaxSMSService extends IntentService
     @Override
     protected void onHandleIntent(Intent intent)
     {
+	// TODO: on create maybe?
+	// needs to be loaded here because the context is only available here
 	properties = PreferenceManager.getDefaultSharedPreferences(BetamaxSMSService.this);
-	// TODO: if the sms is bigger than 160charts it will fail, fix!
 
 	String to = intent.getExtras().getString(TO);
 	String sms = intent.getExtras().getString(SMS);
-	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(properties,to,sms));
-	if (response.isResponseOke() == true)
+
+	Response response = sendSms(to, sms);
+	if (response.isResponseOke())
 	{
-	    //send broadcast
-	    Intent broadcastIntent = new Intent();
-	    broadcastIntent.setAction(Const.ACTION_RESP);
-	    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-	    sendBroadcast(broadcastIntent);
-	    
-	    
-	    SMSHelper smsHelper = new SMSHelper();
-	    if (properties.getBoolean("SaveSMSKey", false))
-	    {
-		smsHelper.addSMS(getContentResolver(), sms, to);
-	    }
-	    
+	    sendSaldoRefreshBroadcast();
+	    saveSmsToPhone(to, sms);
 	}
 	else
 	{
+	    notifyUserAboutFailure(to, sms, response.getErrorMessage());
+	}
+    }
+
+    private Response sendSms(String to, String sms)
+    {
+	ArrayList<String> smsList = Utils.splitSmsTextTo160Chars(sms);
+	for(String singleSMS : smsList)
+	{
+	    Response response = sendSingleSMS(to, singleSMS);
+	    if(!response.isResponseOke())
+	    {
+		//if one sms fails stop sending
+		return response;
+	    }
+	}
+	//if everything went oke return a fake response
+	return new Response("Oke");
+    }
+    
+    private Response sendSingleSMS(String to, String sms)
+    {
+	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(properties, to, sms));
+	for (int i = 0; i >= 1; i++)
+	{
+	    if (response.isResponseOke())
+	    {
+		return response;
+	    }
+	    else
+	    {
+		//if it fails try again, try 3 times in total
+		response = BetamaxHandler.sendSMS(new BetamaxArguments(properties, to, sms));
+	    }
+	}
+	return response;
+    }
+
+    private void sendSaldoRefreshBroadcast()
+    {
+	Intent broadcastIntent = new Intent();
+	broadcastIntent.setAction(Const.ACTION_RESP);
+	broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+	sendBroadcast(broadcastIntent);
+    }
+
+    private void saveSmsToPhone(String to, String sms)
+    {
+	SMSHelper smsHelper = new SMSHelper();
+	if (properties.getBoolean("SaveSMSKey", false))
+	{
+	    smsHelper.addSMS(getContentResolver(), sms, to);
+	}
+    }
+    
+    private void notifyUserAboutFailure(String to, String sms, String errorMessage)
+    {
 	    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-	    int icon = R.drawable.ic_dialog_alert;
-	    CharSequence text = "Beta-SMS failed to send SMS";
-	    CharSequence contentTitle = "Can't send to: " + to;
-	    CharSequence contentText = response.getErrorMessage();
+	    int icon = android.R.drawable.ic_dialog_alert;
+	    CharSequence text = ApplicationContextHelper.getStringUsingR_ID(R.string.NOTIFICATION_POPUP_TITLE);
+	    CharSequence contentTitle = ApplicationContextHelper.getStringUsingR_ID(R.string.NOTIFICATION_TITLE) + to;
+	    CharSequence contentText = errorMessage;
 	    long when = System.currentTimeMillis();
 
 	    Intent i = new Intent(getApplicationContext(), Beta_SMS.class);
@@ -87,8 +138,6 @@ public class BetamaxSMSService extends IntentService
 	    Notification notification = new Notification(icon, text, when);
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
-	    Random generator = new Random( 19580427 );
-	    notificationManager.notify(generator.nextInt(), notification);
-	}
+	    notificationManager.notify(90909, notification);
     }
 }

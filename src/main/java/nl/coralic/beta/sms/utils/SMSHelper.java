@@ -30,7 +30,6 @@ import android.net.Uri;
 public class SMSHelper
 {
     private static final String ADDRESS = "address";
-    private static final String PERSON = "person";
     private static final String DATE = "date";
     private static final String READ = "read";
     private static final String STATUS = "status";
