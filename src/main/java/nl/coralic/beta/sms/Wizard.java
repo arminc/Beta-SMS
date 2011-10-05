@@ -31,6 +31,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -139,8 +140,10 @@ public class Wizard extends Activity
 	    protected void onPostExecute(Response response)
 	    {
 		dialog.dismiss();
+		Log.d(Const.TAG_WZD, "Check isUsernamePasswordValid: " + response.getErrorMessage());
 		if (isUsernamePasswordValid(response.getErrorMessage()))
 		{
+		    Log.d(Const.TAG_WZD, "Check isResponseOke");
 		    if (isResponseOke(response.getErrorCode()))
 		    {
 			setPreferences();
@@ -176,9 +179,9 @@ public class Wizard extends Activity
 	// If one of these then an http error occurred, in other cases it is oke
 	if (R.string.ERR_CONN_ERR == errorCode || R.string.ERR_NO_ARGUMENTS == errorCode || R.string.ERR_PROV_NO_RESP == errorCode)
 	{
-	    return true;
+	    return false;
 	}
-	return false;
+	return true;
     }
 
     private void setPreferences()

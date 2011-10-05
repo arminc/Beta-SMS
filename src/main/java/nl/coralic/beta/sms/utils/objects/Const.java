@@ -28,6 +28,7 @@ public class Const
     public static final String TAG_MAIN = "BETA_SMS";
     public static final String TAG_PHH = "PHONESHANDLER";
     public static final String TAG_CPLA = "CPLISTADAPTER";
+    public static final String TAG_WZD = "WIZARD";
 
     public static final int PICK_CONTACT = 1;
 
