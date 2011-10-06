@@ -85,4 +85,5 @@
 	<string name="NOTIFICATION_POPUP_TITLE">Beta-SMS failed</string>
 	<string name="NOTIFICATION_TITLE">Failed on </string>
 	<string name="lblMissingProvider">Missing a provider? Visit betasms.userecho.com</string>
+	<string name="KEY_FROM">from</string>
 </resources>
