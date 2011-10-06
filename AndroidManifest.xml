@@ -19,7 +19,8 @@
 		<activity android:name="Properties" />
 		<!--  configChanges means don't destroy the activity on orientation changes-->
 		<activity android:name="Wizard" android:configChanges="orientation|keyboardHidden"/>
-		<receiver android:name="widget.BetaSmsWidget" android:label="@string/widget_name">
+		<!--Widget not needed, will probably remove completely later 
+			<receiver android:name="widget.BetaSmsWidget" android:label="@string/widget_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
@@ -27,6 +28,7 @@
 				android:resource="@xml/betasms_widget_provider" />
 		</receiver>
 		<service android:name=".widget.WidgetUpdateService" />
+		 -->
 		<service android:enabled="true" android:name=".betamax.BetamaxSMSService" />
 	</application>
 	<uses-sdk android:minSdkVersion="7" />
