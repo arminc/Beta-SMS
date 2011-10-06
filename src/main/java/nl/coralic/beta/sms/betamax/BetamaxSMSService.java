@@ -31,6 +31,7 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -115,7 +116,8 @@ public class BetamaxSMSService extends IntentService
     private void saveSmsToPhone(String to, String sms)
     {
 	SMSHelper smsHelper = new SMSHelper();
-	smsHelper.addSMS(getContentResolver(), sms, to);
+	ContentResolver contentResolver = getContentResolver();
+	smsHelper.addSMS(contentResolver, sms, to);
     }
     
     private void notifyUserAboutFailure(String to, String sms, String errorMessage)
