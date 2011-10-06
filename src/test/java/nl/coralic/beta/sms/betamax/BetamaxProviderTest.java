@@ -62,11 +62,12 @@ public class BetamaxProviderTest
 	assertEquals(expectedBalance, balance);
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void sendSms()
     {
 	Response response = BetamaxHandler.sendSMS(new BetamaxArguments(provider, username, password, from, to, text));
+	System.out.println(response.getErrorMessage());
 	assertTrue(response.isResponseOke());
     }
 }

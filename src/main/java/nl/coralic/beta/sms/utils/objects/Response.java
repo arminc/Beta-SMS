@@ -78,19 +78,20 @@ public class Response
 	    {
 		Document doc = Utils.getDocument(response);
 		Element root = doc.getDocumentElement();
-		root.normalize();
-		if (!root.getElementsByTagName("SmsResponse").item(0).getFirstChild().getNodeValue().equalsIgnoreCase("success"))
+		//root.normalize();
+		String resultstringValue = root.getElementsByTagName("resultstring").item(0).getFirstChild().getNodeValue();
+		if (resultstringValue.equalsIgnoreCase("failure"))
 		{
 		    responseOke = false;
-		    String tmpCause = root.getElementsByTagName("description").item(0).getFirstChild().getNodeValue();
-		    if (tmpCause.equalsIgnoreCase(""))
+		    String descriptionValue = root.getElementsByTagName("description").item(0).getFirstChild().getNodeValue();
+		    if (descriptionValue.equalsIgnoreCase(""))
 		    {
 			errorCode = R.string.ERR_READ_RESP;
 		    }
 		    else
 		    {
 			// For now we use the Betamax errors to show to the user so we need custom error code, all other errors are coming from text.xml
-			errorMessage = tmpCause;
+			errorMessage = descriptionValue;
 			errorCode = Const.BETAMAX_FIXED_ERROR_CODE;
 		    }
 		}
