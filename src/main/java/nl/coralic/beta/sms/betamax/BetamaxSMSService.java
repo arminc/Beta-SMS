@@ -127,7 +127,7 @@ public class BetamaxSMSService extends IntentService
 
 	    int icon = android.R.drawable.ic_dialog_alert;
 	    CharSequence text = ApplicationContextHelper.getStringUsingR_ID(R.string.NOTIFICATION_POPUP_TITLE);
-	    CharSequence contentTitle = ApplicationContextHelper.getStringUsingR_ID(R.string.NOTIFICATION_TITLE) + to;
+	    CharSequence contentTitle = ApplicationContextHelper.getStringUsingR_ID(R.string.NOTIFICATION_TITLE) + " " + to;
 	    CharSequence contentText = errorMessage;
 	    long when = System.currentTimeMillis();
 
