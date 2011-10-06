@@ -84,7 +84,7 @@ public class Beta_SMS extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
 	Log.d(Const.TAG_MAIN, "Starting the application");
-	// set context to variable
+	// set context to a helper class
 	ApplicationContextHelper.setContext(getApplicationContext());
 	super.onCreate(savedInstanceState);
 	loadProperties();
