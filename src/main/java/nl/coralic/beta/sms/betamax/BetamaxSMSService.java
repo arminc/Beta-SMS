@@ -115,10 +115,7 @@ public class BetamaxSMSService extends IntentService
     private void saveSmsToPhone(String to, String sms)
     {
 	SMSHelper smsHelper = new SMSHelper();
-	if (properties.getBoolean("SaveSMSKey", false))
-	{
-	    smsHelper.addSMS(getContentResolver(), sms, to);
-	}
+	smsHelper.addSMS(getContentResolver(), sms, to);
     }
     
     private void notifyUserAboutFailure(String to, String sms, String errorMessage)
