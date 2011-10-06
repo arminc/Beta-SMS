@@ -337,12 +337,9 @@ public class Beta_SMS extends Activity
 	    in.putExtra(BetamaxSMSService.SMS, txtSmsText.getText().toString());
 	    startService(in);
 	    Toast.makeText(Beta_SMS.this, getText(R.string.SMS_SENDING), Toast.LENGTH_SHORT).show();
-	    if (properties.getBoolean("DeleteTextKey", false))
-	    {
-		// reset everything to empty
-		txtSmsText.setText("");
-		to.setText("");
-	    }
+	    // reset everything to empty
+	    txtSmsText.setText("");
+	    to.setText("");
 	}
     }
 
