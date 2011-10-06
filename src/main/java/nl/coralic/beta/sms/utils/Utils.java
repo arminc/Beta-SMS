@@ -102,6 +102,7 @@ public class Utils
 	DocumentBuilder builder = factory.newDocumentBuilder();
 	ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.getBytes());
 	doc = builder.parse(byteArrayInputStream);
+	doc.getDocumentElement().normalize();
 	return doc;
     }
 }

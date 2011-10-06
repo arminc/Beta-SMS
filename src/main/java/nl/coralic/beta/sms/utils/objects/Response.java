@@ -76,10 +76,10 @@ public class Response
 	{
 	    try
 	    {
-		Document doc = Utils.getDocument(response.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", ""));
+		Document doc = Utils.getDocument(response);
 		Element root = doc.getDocumentElement();
 		root.normalize();
-		if (!root.getElementsByTagName("resultstring").item(0).getFirstChild().getNodeValue().equalsIgnoreCase("success"))
+		if (!root.getElementsByTagName("SmsResponse").item(0).getFirstChild().getNodeValue().equalsIgnoreCase("success"))
 		{
 		    responseOke = false;
 		    String tmpCause = root.getElementsByTagName("description").item(0).getFirstChild().getNodeValue();
