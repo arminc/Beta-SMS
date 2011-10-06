@@ -70,7 +70,7 @@
 	<string name="PHONE_TYPE_HOME">Home</string>
 	<string name="PHONE_TYPE_OTHER">Other</string>
 	<string name="BUTTON_SEND">Send</string>
-	<string name="INFO">Beta-SMS application is made by Armin Čoralić and is released as opensource. If you wish to read more about the application or track the progress please visit the website at http://blog.coralic.nl/beta-sms . If you have an suggestion or a bug please register it here http://beta-sms.coralic.nl</string>
+	<string name="INFO">Beta-SMS is created by Armin Čoralić and is released as and free open source application. If you wish to read more about me, the application or want to track the progress please visit me at http://blog.coralic.nl/beta-sms or Twitter @acoralic. If you have a suggestion or a if you came across a bug please register it here http://betasms.userecho.com</string>
 	<string name="SET_PHONE">Phone number</string>
 	<string name="SET_PHONE_TITLE">Phone number</string>
 	<string name="SET_PHONE_TITLE_DIALOG">Your phone number please...</string>
@@ -84,4 +84,5 @@
 	<string name="SMS_SENDING">Sending SMS</string>
 	<string name="NOTIFICATION_POPUP_TITLE">Beta-SMS failed</string>
 	<string name="NOTIFICATION_TITLE">Failed on </string>
+	<string name="lblMissingProvider">Missing a provider? Visit betasms.userecho.com</string>
 </resources>
