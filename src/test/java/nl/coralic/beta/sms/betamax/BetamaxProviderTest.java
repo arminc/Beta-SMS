@@ -62,7 +62,7 @@ public class BetamaxProviderTest
 	assertEquals(expectedBalance, balance);
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void sendSms()
     {
