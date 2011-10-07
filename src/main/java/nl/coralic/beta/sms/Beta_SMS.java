@@ -19,6 +19,9 @@ package nl.coralic.beta.sms;
 
 import java.net.URLDecoder;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
+
 import nl.coralic.beta.sms.betamax.BetamaxSMSService;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import nl.coralic.beta.sms.utils.ApplicationContextHelper;

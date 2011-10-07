@@ -30,10 +30,13 @@
 		<service android:name=".widget.WidgetUpdateService" />
 		 -->
 		<service android:enabled="true" android:name=".betamax.BetamaxSMSService" />
+		<activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
 	</application>
 	<uses-sdk android:minSdkVersion="7" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.READ_SMS" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>
