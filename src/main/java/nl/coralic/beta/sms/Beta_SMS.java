@@ -218,6 +218,17 @@ public class Beta_SMS extends Activity
 	    finish();
 	}
     }
+    
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        properties = PreferenceManager.getDefaultSharedPreferences(Beta_SMS.this);
+	if (Utils.checkForValidAccount(properties))
+	{
+	    showBalance();
+	}
+    }
 
     /**
      * It will be fired up after a user selects an contact
