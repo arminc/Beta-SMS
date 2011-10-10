@@ -19,9 +19,6 @@ package nl.coralic.beta.sms;
 
 import java.net.URLDecoder;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
-
 import nl.coralic.beta.sms.betamax.BetamaxSMSService;
 import nl.coralic.beta.sms.betamax.BetamaxHandler;
 import nl.coralic.beta.sms.utils.ApplicationContextHelper;
@@ -39,6 +36,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -81,6 +79,7 @@ public class Beta_SMS extends Activity
 
     AlertDialog chooseNumberAlert;
     ProgressDialog showStatusAlert;
+    BroadcastResponseReceiver broadcastRsponseReceiver;
 
     /** Called when the activity is first created. */
     @Override
@@ -90,6 +89,8 @@ public class Beta_SMS extends Activity
 	// set context to a helper class
 	ApplicationContextHelper.setContext(getApplicationContext());
 	super.onCreate(savedInstanceState);
+	setBroadcastReceiver();
+	
 	loadProperties();
 	validateAcount();
 	setView();
@@ -99,6 +100,14 @@ public class Beta_SMS extends Activity
 	setListeners();
 	// set focus on the sms text field
 	txtSmsText.requestFocus();
+    }
+    
+    private void setBroadcastReceiver()
+    {
+	IntentFilter filter = new IntentFilter(Const.BROADCAST_ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastRsponseReceiver = new BroadcastResponseReceiver();
+        registerReceiver(broadcastRsponseReceiver, filter);
     }
 
     private void loadProperties()
@@ -382,12 +391,12 @@ public class Beta_SMS extends Activity
 	super.onDestroy();
     }
 
-    public class ResponseReceiver extends BroadcastReceiver
+    public class BroadcastResponseReceiver extends BroadcastReceiver
     {
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-
+	    Log.d("BROADCAST", "received broadcast");
 	    showBalance();
 	}
 

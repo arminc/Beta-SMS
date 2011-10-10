@@ -108,7 +108,7 @@ public class BetamaxSMSService extends IntentService
     private void sendSaldoRefreshBroadcast()
     {
 	Intent broadcastIntent = new Intent();
-	broadcastIntent.setAction(Const.ACTION_RESP);
+	broadcastIntent.setAction(Const.BROADCAST_ACTION_RESP);
 	broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
 	sendBroadcast(broadcastIntent);
     }
