@@ -1,5 +1,9 @@
 This is the Beta-SMS project. For more information please visit http://blog.coralic.nl/beta-sms
 
+VERSION 3.1
+Fix refresh balance after sending SMS
+Adds
+
 VERSION 3.0
 Wizard, easy setup
 Small layout changes
