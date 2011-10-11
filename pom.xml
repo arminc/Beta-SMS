@@ -166,6 +166,9 @@
                                     public static ** valueOf(java.lang.String); } ]]></option>
 								<option><![CDATA[-keepclassmembers class * extends android.app.Activity{
                                     public void *(android.view.View); } ]]></option>
+								<option><![CDATA[-assumenosideeffects class android.util.Log {
+								public static *** d(...);
+								public static *** v(...); }]]></option> 
 
 								<!-- general proguard options -->
 								<option>-dontskipnonpubliclibraryclasses</option>
