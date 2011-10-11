@@ -166,8 +166,7 @@ public class Wizard extends Activity
 
     private boolean isUsernamePasswordValid(String errorMessage)
     {
-	// If we get an error as response then it means the username/password is wrong, otherwise it should be oke
-	if ("error".equalsIgnoreCase(errorMessage))
+	if (errorMessage.contains("Wrong Username/password combination"))
 	{
 	    return false;
 	}
