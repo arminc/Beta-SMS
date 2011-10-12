@@ -48,14 +48,17 @@ public class BetamaxSMSService extends IntentService
     {
 	super("BetaSMSService");
     }
+    
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        properties = PreferenceManager.getDefaultSharedPreferences(BetamaxSMSService.this);
+    }
 
     @Override
     protected void onHandleIntent(Intent intent)
     {
-	// TODO: on create maybe?
-	// needs to be loaded here because the context is only available here
-	properties = PreferenceManager.getDefaultSharedPreferences(BetamaxSMSService.this);
-
 	String to = intent.getExtras().getString(TO);
 	String sms = intent.getExtras().getString(SMS);
 
