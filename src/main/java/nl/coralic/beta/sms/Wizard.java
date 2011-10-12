@@ -166,7 +166,8 @@ public class Wizard extends Activity
 
     private boolean isUsernamePasswordValid(String errorMessage)
     {
-	if (errorMessage.contains("Wrong Username/password combination"))
+	//12voip uses error, some others use normal message
+	if ("error".equalsIgnoreCase(errorMessage) || errorMessage.contains("Wrong Username/password combination"))
 	{
 	    return false;
 	}
