@@ -387,7 +387,7 @@ public class Beta_SMS extends Activity
     @Override
     protected void onDestroy()
     {
-	// stopService(new Intent(this, BetaSMSService.class));
+	unregisterReceiver(broadcastRsponseReceiver);
 	super.onDestroy();
     }
 
