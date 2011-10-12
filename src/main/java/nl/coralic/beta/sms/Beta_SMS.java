@@ -95,7 +95,7 @@ public class Beta_SMS extends Activity
 	validateAcount();
 	setView();
 	assignUiComponentsToVariables();
-	showBalance();
+	//showBalance();
 	checkIntent(getIntent());
 	setListeners();
 	// set focus on the sms text field
